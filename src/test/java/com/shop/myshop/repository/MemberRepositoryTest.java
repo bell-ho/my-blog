@@ -1,6 +1,6 @@
 package com.shop.myshop.repository;
 
-import com.shop.myshop.model.Member;
+import com.shop.myshop.domain.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
