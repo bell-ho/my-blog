@@ -34,7 +34,7 @@ public class MemberController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createMember(@RequestBody MemberInsertRequestDTO dto, BindingResult result) {
+    public ResponseEntity<?> createMember(@RequestBody MemberInsertRequestDTO dto) {
         try {
             ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
             memberService.join(dto.toEntity());
