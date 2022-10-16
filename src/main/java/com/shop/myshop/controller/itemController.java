@@ -57,10 +57,10 @@ public class itemController {
     public ResponseEntity<?> updateItem(@PathVariable("id") Long id, @RequestBody BookUpdateRequestDTO dto) {
         try {
             ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
+            itemService.updateItem(id, dto.getName(), dto.getPrice(), dto.getStockQuantity());
             return ResponseEntity.ok(data);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 }

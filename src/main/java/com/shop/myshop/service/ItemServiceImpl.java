@@ -30,4 +30,13 @@ public class ItemServiceImpl implements ItemService {
     public List<Item> findItems() {
         return itemRepository.findAll();
     }
+
+    @Override
+    @Transactional
+    public void updateItem(Long id, String name, int price, int stockQuantity) {
+        Item findItem = itemRepository.findById(id).get();
+        findItem.setName(name);
+        findItem.setPrice(price);
+        findItem.setStockQuantity(stockQuantity);
+    }
 }
