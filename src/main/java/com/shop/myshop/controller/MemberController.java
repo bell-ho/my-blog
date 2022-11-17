@@ -7,6 +7,8 @@ import com.shop.myshop.dto.MemberUpdateRequestDTO;
 import com.shop.myshop.service.MemberService;
 import com.shop.myshop.utils.RequestResultEnum;
 import com.shop.myshop.utils.ResponseData;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -29,10 +31,20 @@ public class MemberController {
             ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
             List<MemberResponseDTO> members = memberService.findMembers().stream().map(MemberResponseDTO::new).collect(Collectors.toList());
             data.getData().put("list", members);
+
+//            data.getData().put("list", new Result<>(members.size(), members));
+
             return ResponseEntity.ok(data);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private int count;
+        private T data;
     }
 
     @PostMapping("")
