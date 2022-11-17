@@ -11,4 +11,6 @@ public interface MemberService {
     Member findOne(Long id);
 
     Long join(Member member);
+
+    void update(Long id, String name);
 }

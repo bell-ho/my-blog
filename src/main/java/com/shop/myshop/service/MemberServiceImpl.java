@@ -26,6 +26,12 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    @Override
+    public void update(Long id, String name) {
+        Member member = memberRepository.findById(id).get();
+        member.setName(name);
+    }
+
     private void validateDuplicateMember(Member member) {
         //Exception
         // 혹시나 모를 상황을 대비해 DB에 유니크 조건을 걸어주는게 좋다
