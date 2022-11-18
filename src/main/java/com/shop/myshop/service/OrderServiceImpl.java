@@ -19,6 +19,11 @@ public class OrderServiceImpl implements OrderService {
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
+    @Override
+    public List<Order> orderLists() {
+        return orderRepository.findAll();
+    }
+
     /**
      * 주문
      */

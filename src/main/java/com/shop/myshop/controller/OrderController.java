@@ -1,6 +1,7 @@
 package com.shop.myshop.controller;
 
 import com.shop.myshop.dto.OrderInsertRequestDTO;
+import com.shop.myshop.dto.OrderResponseDTO;
 import com.shop.myshop.service.ItemService;
 import com.shop.myshop.service.MemberService;
 import com.shop.myshop.service.OrderService;
@@ -9,6 +10,9 @@ import com.shop.myshop.utils.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
@@ -23,6 +27,8 @@ public class OrderController {
     public ResponseEntity<?> getOrders() {
         try {
             ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
+            List<OrderResponseDTO> dtoList = orderService.orderLists().stream().map(OrderResponseDTO::new).collect(Collectors.toList());
+            data.getData().put("list", dtoList);
             return ResponseEntity.ok(data);
         } catch (Exception e) {
             throw new RuntimeException(e);
