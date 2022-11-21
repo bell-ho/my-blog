@@ -1,5 +1,6 @@
 package com.shop.myshop.service;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.myshop.domain.*;
 import com.shop.myshop.repository.ItemRepository;
 import com.shop.myshop.repository.MemberRepository;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -15,13 +18,22 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class OrderServiceImpl implements OrderService {
 
+
+    private final EntityManager em;
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
 
     @Override
     public List<Order> orderLists() {
-        return orderRepository.findAll();
+        JPAQueryFactory query = new JPAQueryFactory(em);
+
+        QOrder order = QOrder.order;
+        QMember member = QMember.member;
+
+        return query.select(order).from(order).join(order.member, member).limit(1000).fetch();
+
+//        return orderRepository.findAll();
     }
 
     /**
