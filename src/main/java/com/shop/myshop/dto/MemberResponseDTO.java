@@ -15,6 +15,7 @@ public class MemberResponseDTO {
     private String password;
     private String name;
     private Address address;
+    private String token;
 
     @Builder
     public MemberResponseDTO(Member entity) {
@@ -23,5 +24,15 @@ public class MemberResponseDTO {
         this.email = entity.getEmail();
         this.password = entity.getPassword();
         this.address = new Address(entity.getAddress().getCity(), entity.getAddress().getStreet(), entity.getAddress().getStreet());
+    }
+
+    public Member toEntity() {
+        return Member.builder()
+                .id(id)
+                .name(name)
+                .email(email)
+                .password(password)
+                .address(address)
+                .build();
     }
 }
