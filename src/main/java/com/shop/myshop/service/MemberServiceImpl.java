@@ -3,6 +3,7 @@ package com.shop.myshop.service;
 import com.shop.myshop.domain.Member;
 import com.shop.myshop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +47,16 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findAll();
     }
 
-    public Member getByCredentials(String email, String password) {
+    public Member getByCredentials(String email, String password, final PasswordEncoder encoder) {
         Optional<Member> member = memberRepository.findByEmailAndPassword(email, password);
         if (member.isEmpty()) {
             throw new IllegalStateException("로그인 실패");
         }
+
+        if (!encoder.matches(password, member.get().getPassword())) {
+            return null;
+        }
+
         return member.get();
     }
 

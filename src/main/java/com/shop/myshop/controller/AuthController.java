@@ -10,6 +10,8 @@ import com.shop.myshop.utils.RequestResultEnum;
 import com.shop.myshop.utils.ResponseData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,13 @@ public class AuthController {
 
     private final MemberService memberService;
     private final TokenProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody LoginRequestDTO dto) {
         try {
             ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
-            MemberResponseDTO member = new MemberResponseDTO(memberService.getByCredentials(dto.getEmail(), dto.getPassword()));
+            MemberResponseDTO member = new MemberResponseDTO(memberService.getByCredentials(dto.getEmail(), dto.getPassword(), passwordEncoder));
 
             final String token = tokenProvider.create(member.toEntity());
 

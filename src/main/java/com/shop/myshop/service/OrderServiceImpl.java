@@ -26,14 +26,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> orderLists() {
-        JPAQueryFactory query = new JPAQueryFactory(em);
+//        JPAQueryFactory query = new JPAQueryFactory(em);
 
-        QOrder order = QOrder.order;
-        QMember member = QMember.member;
+//        QOrder order = QOrder.order;
+//        QMember member = QMember.member;
 
-        return query.select(order).from(order).join(order.member, member).limit(1000).fetch();
+//        return query.select(order).from(order).join(order.member, member).limit(1000).fetch();
 
-//        return orderRepository.findAll();
+        return orderRepository.findAll();
     }
 
     /**

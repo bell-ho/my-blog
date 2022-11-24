@@ -5,6 +5,8 @@ import com.shop.myshop.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -12,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class MemberInsertRequestDTO {
 
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @NotEmpty(message = "필수 값")
     private String name;
     private String email;
@@ -24,7 +27,7 @@ public class MemberInsertRequestDTO {
         return Member.builder()
                 .name(name)
                 .email(email)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .address(new Address(city, street, zipcode))
                 .build();
     }
