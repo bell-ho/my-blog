@@ -8,6 +8,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Builder
 @Getter
 @Setter
@@ -20,6 +21,10 @@ public class Member {
     private Long id;
 
     private String name;
+
+    private String email;
+
+    private String password;
 
     @Embedded
     private Address address;

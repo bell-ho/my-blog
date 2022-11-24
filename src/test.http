@@ -1,0 +1,11 @@
+### POST
+POST http://localhost:8080/api/v1/auth/signin
+Content-Type: application/json
+
+{
+  "email": "aaa@aaa.com",
+  "password": "aaa"
+}
+
+### GET
+GET http://localhost:8080/api/v1/members

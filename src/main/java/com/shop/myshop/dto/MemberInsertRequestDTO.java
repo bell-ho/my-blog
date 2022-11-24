@@ -14,6 +14,8 @@ public class MemberInsertRequestDTO {
 
     @NotEmpty(message = "필수 값")
     private String name;
+    private String email;
+    private String password;
     private String city;
     private String street;
     private String zipcode;
@@ -21,6 +23,8 @@ public class MemberInsertRequestDTO {
     public Member toEntity() {
         return Member.builder()
                 .name(name)
+                .email(email)
+                .password(password)
                 .address(new Address(city, street, zipcode))
                 .build();
     }

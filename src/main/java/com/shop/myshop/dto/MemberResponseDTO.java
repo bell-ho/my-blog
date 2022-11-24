@@ -11,6 +11,8 @@ import lombok.Setter;
 public class MemberResponseDTO {
 
     private Long id;
+    private String email;
+    private String password;
     private String name;
     private Address address;
 
@@ -18,6 +20,8 @@ public class MemberResponseDTO {
     public MemberResponseDTO(Member entity) {
         this.id = entity.getId();
         this.name = entity.getName();
+        this.email = entity.getEmail();
+        this.password = entity.getPassword();
         this.address = new Address(entity.getAddress().getCity(), entity.getAddress().getStreet(), entity.getAddress().getStreet());
     }
 }

@@ -13,4 +13,6 @@ public interface MemberService {
     Long join(Member member);
 
     void update(Long id, String name);
+
+    Member getByCredentials(String email, String password);
 }

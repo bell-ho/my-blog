@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -35,14 +36,22 @@ public class MemberServiceImpl implements MemberService {
     private void validateDuplicateMember(Member member) {
         //Exception
         // 혹시나 모를 상황을 대비해 DB에 유니크 조건을 걸어주는게 좋다
-        List<Member> findMembers = memberRepository.findByName(member.getName());
+        List<Member> findMembers = memberRepository.findByEmail(member.getEmail());
         if (!findMembers.isEmpty()) {
-            throw new IllegalStateException("중복 이름");
+            throw new IllegalStateException("중복 이메일");
         }
     }
 
     public List<Member> findMembers() {
         return memberRepository.findAll();
+    }
+
+    public Member getByCredentials(String email, String password) {
+        Optional<Member> member = memberRepository.findByEmailAndPassword(email, password);
+        if (member.isEmpty()) {
+            throw new IllegalStateException("로그인 실패");
+        }
+        return member.get();
     }
 
     public Member findOne(Long id) {
