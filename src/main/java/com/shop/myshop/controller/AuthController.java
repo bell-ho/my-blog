@@ -1,6 +1,5 @@
 package com.shop.myshop.controller;
 
-import com.shop.myshop.domain.Member;
 import com.shop.myshop.dto.LoginRequestDTO;
 import com.shop.myshop.dto.MemberInsertRequestDTO;
 import com.shop.myshop.dto.MemberResponseDTO;
@@ -16,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -43,4 +44,16 @@ public class AuthController {
             throw new RuntimeException(e);
         }
     }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> createMember(@RequestBody MemberInsertRequestDTO dto) {
+        try {
+            ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
+            memberService.join(dto.toEntity());
+            return ResponseEntity.ok(data);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

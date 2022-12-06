@@ -37,8 +37,8 @@ public class MemberServiceImpl implements MemberService {
     private void validateDuplicateMember(Member member) {
         //Exception
         // 혹시나 모를 상황을 대비해 DB에 유니크 조건을 걸어주는게 좋다
-        List<Member> findMembers = memberRepository.findByEmail(member.getEmail());
-        if (!findMembers.isEmpty()) {
+        Optional<Member> findMembers = memberRepository.findByEmail(member.getEmail());
+        if (findMembers.isPresent()) {
             throw new IllegalStateException("중복 이메일");
         }
     }
@@ -48,16 +48,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     public Member getByCredentials(String email, String password, final PasswordEncoder encoder) {
-        Optional<Member> member = memberRepository.findByEmailAndPassword(email, password);
-        if (member.isEmpty()) {
-            throw new IllegalStateException("로그인 실패");
+        Optional<Member> member = memberRepository.findByEmail(email);
+
+        if (member.isPresent() && encoder.matches(password, member.get().getPassword())) {
+            return member.get();
         }
 
-        if (!encoder.matches(password, member.get().getPassword())) {
-            return null;
-        }
-
-        return member.get();
+        return null;
     }
 
     public Member findOne(Long id) {

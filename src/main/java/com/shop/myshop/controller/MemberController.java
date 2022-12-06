@@ -49,17 +49,6 @@ public class MemberController {
         private T data;
     }
 
-    @PostMapping("")
-    public ResponseEntity<?> createMember(@RequestBody @Valid MemberInsertRequestDTO dto) {
-        try {
-            ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
-            memberService.join(dto.toEntity());
-            return ResponseEntity.ok(data);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<?> updateMember(@PathVariable("id") Long id, @RequestBody @Valid MemberUpdateRequestDTO dto) {
         try {

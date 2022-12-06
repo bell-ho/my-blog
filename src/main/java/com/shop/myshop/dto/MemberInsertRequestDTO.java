@@ -15,20 +15,13 @@ import javax.validation.constraints.NotEmpty;
 public class MemberInsertRequestDTO {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    @NotEmpty(message = "필수 값")
-    private String name;
     private String email;
     private String password;
-    private String city;
-    private String street;
-    private String zipcode;
 
     public Member toEntity() {
         return Member.builder()
-                .name(name)
                 .email(email)
                 .password(passwordEncoder.encode(password))
-                .address(new Address(city, street, zipcode))
                 .build();
     }
 }

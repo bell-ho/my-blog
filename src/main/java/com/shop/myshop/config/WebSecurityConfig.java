@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/", "/api/v1/auth/**").permitAll() // /와 /auth/** 는 경로 인증 안함
                 .anyRequest()
-                .authenticated(); // 이외는 모든 경로 인증
+                .authenticated();
 
         // filter 등록 매 요청마다 Corsfilter 실행 후 jwtAuthenticationFilter 실행
         http.addFilterAfter(
