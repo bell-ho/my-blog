@@ -11,12 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
@@ -28,7 +26,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticate(@RequestBody LoginRequestDTO dto) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginRequestDTO dto, HttpServletRequest request) {
         try {
             ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
             MemberResponseDTO member = new MemberResponseDTO(memberService.getByCredentials(dto.getEmail(), dto.getPassword(), passwordEncoder));
@@ -38,6 +36,9 @@ public class AuthController {
             member.setToken(token);
 
             data.getData().put("member", member);
+
+            HttpSession session = request.getSession();
+            session.setAttribute("loginMember", member);
 
             return ResponseEntity.ok(member);
         } catch (Exception e) {
@@ -49,11 +50,28 @@ public class AuthController {
     public ResponseEntity<?> createMember(@RequestBody MemberInsertRequestDTO dto) {
         try {
             ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
-            memberService.join(dto.toEntity());
+            MemberResponseDTO member = new MemberResponseDTO(memberService.join(dto.toEntity()));
+
+            final String token = tokenProvider.create(member.toEntity());
+
+            member.setToken(token);
+
+            data.getData().put("member", member);
+
             return ResponseEntity.ok(data);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<?> loginInfo(@SessionAttribute(name = "loginMember", required = false) MemberResponseDTO member) {
+        try {
+            ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
+            data.getData().put("member", member);
+            return ResponseEntity.ok(data);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

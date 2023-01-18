@@ -18,11 +18,11 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long join(Member member) {
+    public Member join(Member member) {
         try {
             validateDuplicateMember(member); // 중복 회원 검증
             memberRepository.save(member);
-            return member.getId();
+            return member;
         } catch (Exception e) {
             throw e;
         }
@@ -59,5 +59,9 @@ public class MemberServiceImpl implements MemberService {
 
     public Member findOne(Long id) {
         return memberRepository.findById(id).get();
+    }
+
+    public void delete(Long id) {
+        memberRepository.deleteById(id);
     }
 }

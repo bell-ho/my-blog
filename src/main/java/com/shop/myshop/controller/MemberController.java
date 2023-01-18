@@ -34,8 +34,6 @@ public class MemberController {
             List<MemberResponseDTO> members = memberService.findMembers().stream().map(MemberResponseDTO::new).collect(Collectors.toList());
             data.getData().put("list", members);
 
-//            data.getData().put("list", new Result<>(members.size(), members));
-
             return ResponseEntity.ok(data);
         } catch (Exception e) {
             throw new RuntimeException(e);

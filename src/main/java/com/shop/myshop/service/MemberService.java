@@ -11,9 +11,11 @@ public interface MemberService {
 
     Member findOne(Long id);
 
-    Long join(Member member);
+    Member join(Member member);
 
     void update(Long id, String name);
 
     Member getByCredentials(String email, String password, PasswordEncoder encoder);
+
+    void delete(Long id);
 }
