@@ -36,14 +36,24 @@ export default NextAuth({
         .then((data) => data.data.words[0]);
 
       const params = {
-        id: user.user?.id,
         name: user.user?.name ?? '',
         nickName,
+        uniqueKey: user.user?.id,
         email: user.user?.email ?? '',
         provider,
       };
 
-      console.log(params);
+      const validationUser = await axios
+        .get(`/api/v1/auth/validation-user/${params.uniqueKey}`)
+        .then((data) => data.data.data);
+
+      if (!validationUser?.member) {
+        const newMember = await axios
+          .post(`/api/v1/auth/signup`, params)
+          .then((data) => data.data.data);
+
+        // console.log(newMember);
+      }
 
       return true;
     },
