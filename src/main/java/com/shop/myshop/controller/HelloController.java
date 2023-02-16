@@ -16,12 +16,13 @@ public class HelloController {
     @GetMapping("")
     public ResponseEntity<?> hello() {
         try {
-            ResponseData data = new ResponseData(RequestResultEnum.SUCCESS);
-            data.getData().put("result", "성공");
+            ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS)
+                    .add("result", "success");
 
             return ResponseEntity.ok(data);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            ResponseData error = ResponseData.fromException(e);
+            return ResponseEntity.status(error.getStatus()).body(e);
         }
     }
 }
