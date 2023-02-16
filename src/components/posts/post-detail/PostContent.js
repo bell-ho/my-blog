@@ -13,7 +13,8 @@ const PostContent = ({ post }) => {
         <Image
           width={600}
           height={300}
-          src={`/images/posts/${post.slug}/${image.src}`}
+          layout="intrinsic"
+          src={`/images/posts/${post.slug}/${image.properties.src}`}
           alt={image.alt}
         />
       );
@@ -28,6 +29,7 @@ const PostContent = ({ post }) => {
             <Image
               width={600}
               height={300}
+              layout="intrinsic"
               src={`/images/posts/${post.slug}/${image.properties.src}`}
               alt={image.alt}
             />
