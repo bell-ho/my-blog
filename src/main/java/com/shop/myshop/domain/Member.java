@@ -3,12 +3,10 @@ package com.shop.myshop.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "tcm_member", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Builder
 @Getter
 @Setter
@@ -17,19 +15,17 @@ public class Member {
 
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "id")
     private Long id;
-
+    @Column(name = "name")
     private String name;
-
+    @Column(name = "nick_name")
+    private String nickName;
+    @Column(name = "unique_key")
+    private String uniqueKey;
+    @Column(name = "email")
     private String email;
-
-    private String password;
-
-    @Embedded
-    private Address address;
-
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
+    @Column(name = "provider")
+    private String provider;
 
 }

@@ -1,11 +1,7 @@
 package com.shop.myshop.dto;
 
-import com.shop.myshop.domain.Address;
-import com.shop.myshop.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 
