@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tcm_member", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
+@Table(name = "member", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
 @Builder
 @Getter
 @Setter

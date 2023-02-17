@@ -24,7 +24,6 @@ public class MemberResponseDTO {
 
     public Member toEntity() {
         return Member.builder()
-                .id(id)
                 .email(email)
                 .name(name)
                 .nickName(nickName)

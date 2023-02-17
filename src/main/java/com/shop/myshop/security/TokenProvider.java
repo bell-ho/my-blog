@@ -22,7 +22,7 @@ public class TokenProvider {
         // 토큰 생성
         return Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-                .setSubject(member.getId().toString())
+                .setSubject(member.getNickName())
                 .setIssuer("jh")
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate).compact();
