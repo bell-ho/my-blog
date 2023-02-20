@@ -3,6 +3,7 @@ package com.shop.myshop.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,5 +28,6 @@ public class Member {
     private String email;
     @Column(name = "provider")
     private String provider;
-
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts;
 }

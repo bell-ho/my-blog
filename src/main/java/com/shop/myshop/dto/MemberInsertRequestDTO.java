@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 public class MemberInsertRequestDTO {
 
-
     private String name;
     private String nickName;
     private String uniqueKey;
