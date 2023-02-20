@@ -3,13 +3,13 @@ import { backUrl } from '@/configs/backUrl';
 
 export const axios = Axios.create({
   baseURL: backUrl,
-  // baseURL: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
 axios.defaults.withCredentials = true;
+
 axios.interceptors.request.use(
   function (config) {
     return config;

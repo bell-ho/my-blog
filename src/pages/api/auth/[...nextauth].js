@@ -51,11 +51,23 @@ export default NextAuth({
         const newMember = await axios
           .post(`/api/v1/auth/signup`, params)
           .then((data) => data.data.data);
-
-        // console.log(newMember);
       }
 
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${validationUser?.member.token}`;
+
       return true;
+    },
+    async jwt({ token, account, user }) {
+      if (account) {
+        token.accessToken = account.access_token;
+        token.id = user?.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id;
+
+      return session;
     },
   },
 });

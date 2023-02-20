@@ -18,8 +18,8 @@ const PostItem = ({ post: { title, image, date, excerpt, slug } }) => {
       <li className={classes.post}>
         <div className={classes.image}>
           <Image
-            layout={'response'}
-            width={800}
+            layout={'responsive'}
+            width={400}
             height={300}
             src={`/images/posts/getting-started-with-nextjs/getting-started-nextjs.png`}
             alt={title}
@@ -34,16 +34,16 @@ const PostItem = ({ post: { title, image, date, excerpt, slug } }) => {
             <p className={'bottom'}>{'#tag #test'}</p>
             <div className="icon">
               <div className={'left'}>
-                <span class="material-icons-with-text">
-                  <i class="material-icons">thumb_up_off_alt</i>
+                <span className="material-icons-with-text">
+                  <i className="material-icons">thumb_up_off_alt</i>
                   123
                 </span>
-                <span class="material-icons-with-text">
-                  <i class="material-icons">thumb_down_off_alt</i>
+                <span className="material-icons-with-text">
+                  <i className="material-icons">thumb_down_off_alt</i>
                   12
                 </span>
               </div>
-              <span class="material-icons">delete</span>
+              <span className="material-icons">delete</span>
             </div>
           </ContentWrapper>
         </div>

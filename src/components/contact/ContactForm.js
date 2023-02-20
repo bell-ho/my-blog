@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import classes from './contact-form.module.css';
-import { axios } from '@/util/axios';
 import Notification from '@/components/ui/notification';
 import styled from '@emotion/styled';
+import { useSession } from 'next-auth/react';
+import { createPost } from '@/pages/api/post/post';
 
 const ContactForm = () => {
-  const inputRef = useRef(null);
+  const { data: session, status } = useSession();
 
-  const handleButtonClick = useCallback((e) => {
+  const inputRef = useRef(null);
+  const tagInputRef = useRef(null);
+
+  const imageButtonClick = useCallback((e) => {
     inputRef.current.click();
   }, []);
 
@@ -60,17 +64,30 @@ const ContactForm = () => {
     [requestError],
   );
 
-  const sendMessageHandler = async (e) => {
-    e.preventDefault();
+  const sendMessageHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    // try {
-    //   await axios.post(`/api/contact`, {});
-    //   setRequestStatus('success');
-    // } catch (e) {
-    //   setRequestError(e.message);
-    //   setRequestStatus('error');
-    // }
-  };
+      const tag = tagInputRef.current.value;
+
+      const params = {
+        member: {
+          uniqueKey: session?.user?.id,
+        },
+        hashtags: [tag],
+      };
+
+      try {
+        // console.log(params);
+        await createPost(params);
+        setRequestStatus('success');
+      } catch (e) {
+        setRequestError(e.message);
+        setRequestStatus('error');
+      }
+    },
+    [session?.user?.id],
+  );
 
   return (
     <section className={classes.contact}>
@@ -78,13 +95,13 @@ const ContactForm = () => {
         <div className={classes.controls}>
           <div className={classes.control}>
             <label htmlFor="tag">#tag</label>
-            <input type="text" id={'tag'} />
+            <input ref={tagInputRef} type="text" id={'tag'} />
           </div>
         </div>
 
         <ButtonWrapper>
           <div className={classes.control}>
-            <button onClick={handleButtonClick}>이미지 업로드</button>
+            <button onClick={imageButtonClick}>이미지 업로드</button>
             <input
               id={'images'}
               type="file"
