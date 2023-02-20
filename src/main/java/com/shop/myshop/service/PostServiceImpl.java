@@ -27,8 +27,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Post createPost(Long memberId, List<String> hashtags) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+    public Post createPost(String memberUniqueKey, List<String> hashtags) {
+        Member member = memberRepository.findByUniqueKey(memberUniqueKey).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
         Post savedPost = postRepository.save(Post.createPost(member));
 
         hashtags.forEach((v) -> {

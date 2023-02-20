@@ -21,9 +21,9 @@ public class PostController {
     @PostMapping("")
     public ResponseEntity<?> createPost(@RequestBody PostInsertRequest dto) {
 
-        Post post = postService.createPost(dto.getMember().getId(), dto.getHashtags());
+        Long postId = postService.createPost(dto.getMember().getUniqueKey(), dto.getHashtags()).getId();
 
-        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("post", post);
+        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("postId", postId);
         return ResponseEntity.ok(data);
     }
 }

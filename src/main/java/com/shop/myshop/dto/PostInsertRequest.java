@@ -15,22 +15,11 @@ public class PostInsertRequest {
     private MemberDTO member;
     private List<String> hashtags = new ArrayList<>();
 
-    public Post toEntity() {
-        return Post.builder()
-                .member(member.toEntity())
-                .build();
-    }
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MemberDTO {
-        private Long id;
-
-        public Member toEntity() {
-            return Member.builder()
-                    .id(id)
-                    .build();
-        }
+        private String uniqueKey;
     }
 }

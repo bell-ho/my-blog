@@ -17,9 +17,11 @@ public class MemberResponseDTO {
 
     @Builder
     public MemberResponseDTO(Member entity) {
-        this.email = entity.getEmail();
-        this.name = entity.getName();
-        this.nickName = entity.getNickName();
+        if (entity != null) {
+            this.email = entity.getEmail() != null ? entity.getEmail() : "";
+            this.name = entity.getName();
+            this.nickName = entity.getNickName();
+        }
     }
 
     public Member toEntity() {

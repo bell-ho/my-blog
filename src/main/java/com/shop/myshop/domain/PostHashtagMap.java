@@ -19,11 +19,11 @@ public class PostHashtagMap {
     private PostHashtagId id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="post_id")
+    @JoinColumn(name = "post_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Post post;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "hashtag_id")
+    @JoinColumn(name = "hashtag_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Hashtag hashtag;
 
     public static PostHashtagMap createPostHashtag(Post post, Hashtag hashtag) {

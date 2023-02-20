@@ -15,7 +15,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member findByUniqueKey(String key) {
-        return memberRepository.findByUniqueKey(key);
+        return memberRepository.findByUniqueKey(key).orElseThrow(()-> new IllegalArgumentException("NOT FOUND"));
     }
 
     @Override
