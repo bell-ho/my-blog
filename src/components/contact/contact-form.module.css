@@ -2,7 +2,7 @@
     margin: var(--size-8) auto;
     border-radius: 6px;
     background-color: var(--color-grey-100);
-    width: 90%;
+    width: 100%;
     max-width: 50rem;
     padding: var(--size-4);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
@@ -14,7 +14,11 @@
     margin: var(--size-4) 0;
     text-align: left;
 }
-
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 .form label {
     display: block;
     font-family: 'Oswald', sans-serif;
@@ -45,10 +49,9 @@
 }
 
 .actions {
-    margin-top: var(--size-4);
-    text-align: right;
+    /*margin-top: var(--size-4);*/
+    /*text-align: right;*/
 }
-
 .form button {
     font: inherit;
     cursor: pointer;

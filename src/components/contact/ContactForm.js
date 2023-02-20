@@ -1,13 +1,29 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import classes from './contact-form.module.css';
 import { axios } from '@/util/axios';
 import Notification from '@/components/ui/notification';
+import styled from '@emotion/styled';
+
 const ContactForm = () => {
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredName, setEnteredName] = useState('');
-  const [enteredMessage, setEnteredMessage] = useState('');
+  const inputRef = useRef(null);
+
+  const handleButtonClick = useCallback((e) => {
+    inputRef.current.click();
+  }, []);
+
+  const onUploadImage = useCallback((e) => {
+    const imageFormData = new FormData();
+    const reg = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
+    [].forEach.call(e.target.files, (f) => {
+      if (f.name.match(reg)) {
+        imageFormData.append('image', f);
+      }
+    });
+  }, []);
+
   const [requestStatus, setRequestStatus] = useState(''); // 'pending', 'success', 'error'
   const [requestError, setRequestError] = useState('');
+  const [imagePaths, setImagePaths] = useState([]);
 
   useEffect(() => {
     if (requestStatus === 'success' || requestStatus === 'error') {
@@ -47,67 +63,50 @@ const ContactForm = () => {
   const sendMessageHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      await axios.post(`/api/contact`, {
-        email: enteredEmail,
-        name: enteredName,
-        message: enteredMessage,
-      });
-      setRequestStatus('success');
-      setEnteredMessage('');
-      setEnteredName('');
-      setEnteredEmail('');
-    } catch (e) {
-      setRequestError(e.message);
-      setRequestStatus('error');
-    }
+    // try {
+    //   await axios.post(`/api/contact`, {});
+    //   setRequestStatus('success');
+    // } catch (e) {
+    //   setRequestError(e.message);
+    //   setRequestStatus('error');
+    // }
   };
 
   return (
     <section className={classes.contact}>
-      <h1>Help?</h1>
       <form className={classes.form} onSubmit={sendMessageHandler}>
         <div className={classes.controls}>
           <div className={classes.control}>
-            <label htmlFor="email">email</label>
-            <input
-              type="email"
-              id={'email'}
-              required
-              value={enteredEmail}
-              onChange={(e) => setEnteredEmail(e.target.value)}
-            />
+            <label htmlFor="tag">#tag</label>
+            <input type="text" id={'tag'} />
           </div>
+        </div>
+
+        <ButtonWrapper>
           <div className={classes.control}>
-            <label htmlFor="name">name</label>
+            <button onClick={handleButtonClick}>이미지 업로드</button>
             <input
-              type="text"
-              id={'name'}
-              required
-              value={enteredName}
-              onChange={(e) => setEnteredName(e.target.value)}
+              id={'images'}
+              type="file"
+              accept="image/*"
+              ref={inputRef}
+              onChange={onUploadImage}
+              style={{ display: 'none' }}
             />
           </div>
-        </div>
-
-        <div className={classes.control}>
-          <label htmlFor="message">message</label>
-          <textarea
-            id={'message'}
-            rows={5}
-            required
-            value={enteredMessage}
-            onChange={(e) => setEnteredMessage(e.target.value)}
-          />
-        </div>
-
-        <div className={classes.actions}>
-          <button>Send Message</button>
-        </div>
+          <div className={classes.actions}>
+            <button>등록</button>
+          </div>
+        </ButtonWrapper>
       </form>
 
       {requestStatus && <Notification result={notification(requestStatus)}></Notification>}
     </section>
   );
 };
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 export default ContactForm;

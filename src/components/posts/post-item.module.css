@@ -1,7 +1,11 @@
 .post {
+    margin: var(--size-8) auto;
+    max-width: 50rem;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     background-color: var(--color-grey-800);
     text-align: center;
+    border-radius: 10px;
+    padding: 1rem;
 }
 
 .post a {
@@ -9,6 +13,7 @@
 }
 
 .image {
+    border-radius: 10px;
     width: 100%;
     max-height: 20rem;
     overflow: hidden;
@@ -19,11 +24,11 @@
 }
 
 .content {
-    padding: var(--size-4);
+    padding: 1rem 1rem 0;
+    align-items: center;
 }
 
 .content h3 {
-    margin: var(--size-2) 0;
     font-size: var(--size-6);
 }
 

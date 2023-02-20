@@ -10,7 +10,6 @@ export default function Home() {
 
   return (
     <Fragment>
-      <Hero />
       <FeaturedPosts posts={data} />
     </Fragment>
   );
