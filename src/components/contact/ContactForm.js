@@ -8,11 +8,11 @@ import { createPost } from '@/pages/api/post/post';
 const ContactForm = () => {
   const { data: session, status } = useSession();
 
-  const inputRef = useRef(null);
-  const tagInputRef = useRef(null);
+  const imageInputRef = useRef(null);
+  const contentInputRef = useRef(null);
 
   const imageButtonClick = useCallback((e) => {
-    inputRef.current.click();
+    imageInputRef.current.click();
   }, []);
 
   const onUploadImage = useCallback((e) => {
@@ -68,17 +68,21 @@ const ContactForm = () => {
     async (e) => {
       e.preventDefault();
 
-      const tag = tagInputRef.current.value;
+      const content = contentInputRef.current.value;
+
+      const hashtags = Array.from(
+        new Set(content.match(/#[^\s#]+/g).map((v) => v.slice(1).toLowerCase())),
+      );
 
       const params = {
         member: {
           uniqueKey: session?.user?.id,
         },
-        hashtags: [tag],
+        content,
+        hashtags,
       };
 
       try {
-        // console.log(params);
         await createPost(params);
         setRequestStatus('success');
       } catch (e) {
@@ -94,8 +98,8 @@ const ContactForm = () => {
       <form className={classes.form} onSubmit={sendMessageHandler}>
         <div className={classes.controls}>
           <div className={classes.control}>
-            <label htmlFor="tag">#tag</label>
-            <input ref={tagInputRef} type="text" id={'tag'} />
+            <label htmlFor="content">Content</label>
+            <input ref={contentInputRef} type="text" id={'content'} />
           </div>
         </div>
 
@@ -106,7 +110,7 @@ const ContactForm = () => {
               id={'images'}
               type="file"
               accept="image/*"
-              ref={inputRef}
+              ref={imageInputRef}
               onChange={onUploadImage}
               style={{ display: 'none' }}
             />
