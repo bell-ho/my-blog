@@ -5,3 +5,8 @@ export const createPost = async (params) => {
 
   return data;
 };
+
+export const getPosts = async () => {
+  const { data } = await axios.get(`/api/v1/post`);
+  return data.data.posts;
+};

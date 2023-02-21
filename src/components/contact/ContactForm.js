@@ -4,8 +4,12 @@ import Notification from '@/components/ui/notification';
 import styled from '@emotion/styled';
 import { useSession } from 'next-auth/react';
 import { createPost } from '@/pages/api/post/post';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { queryKey } from '@/react-query/constants';
 
 const ContactForm = () => {
+  const queryClient = useQueryClient();
+
   const { data: session, status } = useSession();
 
   const imageInputRef = useRef(null);
@@ -64,14 +68,25 @@ const ContactForm = () => {
     [requestError],
   );
 
-  const sendMessageHandler = useCallback(
+  const createPostMutation = useMutation((params) => createPost(params), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([queryKey.posts.all]);
+      setRequestStatus('success');
+    },
+    onError: (e) => {
+      setRequestError(e.message);
+      setRequestStatus('error');
+    },
+  });
+
+  const sendHandler = useCallback(
     async (e) => {
       e.preventDefault();
 
       const content = contentInputRef.current.value;
 
       const hashtags = Array.from(
-        new Set(content.match(/#[^\s#]+/g).map((v) => v.slice(1).toLowerCase())),
+        new Set(content.match(/#[^\s#]+/g)?.map((v) => v.slice(1).toLowerCase())),
       );
 
       const params = {
@@ -82,20 +97,14 @@ const ContactForm = () => {
         hashtags,
       };
 
-      try {
-        await createPost(params);
-        setRequestStatus('success');
-      } catch (e) {
-        setRequestError(e.message);
-        setRequestStatus('error');
-      }
+      await createPostMutation.mutate(params);
     },
-    [session?.user?.id],
+    [createPostMutation, session?.user?.id],
   );
 
   return (
     <section className={classes.contact}>
-      <form className={classes.form} onSubmit={sendMessageHandler}>
+      <form className={classes.form} onSubmit={sendHandler}>
         <div className={classes.controls}>
           <div className={classes.control}>
             <label htmlFor="content">Content</label>

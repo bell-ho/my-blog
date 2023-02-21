@@ -1,17 +1,11 @@
-import React from 'react';
+import React, { Children } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classes from './post-item.module.css';
 import styled from '@emotion/styled';
-const PostItem = ({ post: { title, image, date, excerpt, slug } }) => {
-  const formattedDate = new Date(date).toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
 
-  const imagePath = `/images/posts/${slug}/${image}`;
-  const linkPath = `/posts/${slug}`;
+const PostItem = ({ post: { id, content, nickName, images, createDate } }) => {
+  // const { src } = images[0];
 
   return (
     <Wrapper>
@@ -22,16 +16,28 @@ const PostItem = ({ post: { title, image, date, excerpt, slug } }) => {
             width={400}
             height={300}
             src={`/images/posts/getting-started-with-nextjs/getting-started-nextjs.png`}
-            alt={title}
+            alt={content}
           />
         </div>
         <div className={classes.content}>
           <ContentWrapper>
             <div className="top">
-              <h3>{'jh'}</h3>
-              <time>{formattedDate}</time>
+              <h4>{nickName}</h4>
+              <time>{createDate}</time>
             </div>
-            <p className={'bottom'}>{'#tag #test'}</p>
+            <p className={'bottom'}>
+              {Children.toArray(
+                content.split(/(#[^\s#]+)/g).map((v, i) => {
+                  if (v.match(/(#[^\s#]+)/g)) {
+                    return (
+                      // <Link href={`/hashtag/${v.slice(1)}`} prefetch={false} key={i}>
+                      <Link href={`/`}>{v}</Link>
+                    );
+                  }
+                  return v;
+                }),
+              )}
+            </p>
             <div className="icon">
               <div className={'left'}>
                 <span className="material-icons-with-text">
