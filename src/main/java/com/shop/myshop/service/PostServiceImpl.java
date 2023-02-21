@@ -32,9 +32,12 @@ public class PostServiceImpl implements PostService {
         Post savedPost = postRepository.save(Post.createPost(member));
 
         hashtags.forEach((v) -> {
-            if (validateDuplicateTag(v)) {
-                Hashtag savedTag = hashTagRepository.save(Hashtag.createHashtag(v));
-                PostHashtagMap savedPostHashtag = postHashtagMapRepository.save(PostHashtagMap.createPostHashtag(savedPost, savedTag));
+            if (!validateDuplicateTag(v)) {
+                Hashtag newTag = hashTagRepository.save(Hashtag.createHashtag(v));
+                postHashtagMapRepository.save(PostHashtagMap.createPostHashtag(savedPost, newTag));
+            } else {
+                Hashtag existedHashtag = hashTagRepository.findByName(v).get();
+                postHashtagMapRepository.save(PostHashtagMap.createPostHashtag(savedPost, existedHashtag));
             }
         });
 

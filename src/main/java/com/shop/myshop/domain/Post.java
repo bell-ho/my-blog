@@ -1,10 +1,8 @@
 package com.shop.myshop.domain;
 
 import lombok.*;
-import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
-
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
@@ -21,6 +19,9 @@ public class Post {
     @GeneratedValue
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "content")
+    private String content;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")

@@ -28,6 +28,8 @@ public class PostHashtagMap {
 
     public static PostHashtagMap createPostHashtag(Post post, Hashtag hashtag) {
         PostHashtagMap postHashtagMap = new PostHashtagMap();
+        PostHashtagId postHashtagId = new PostHashtagId(post.getId(), hashtag.getId());
+        postHashtagMap.setId(postHashtagId);
         postHashtagMap.setPost(post);
         postHashtagMap.setHashtag(hashtag);
         return postHashtagMap;
