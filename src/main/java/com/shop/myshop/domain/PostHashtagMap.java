@@ -13,7 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Setter
 @Entity
-public class PostHashtagMap {
+public class PostHashtagMap extends BaseEntity {
 
     @EmbeddedId
     private PostHashtagId id;
@@ -27,8 +27,9 @@ public class PostHashtagMap {
     private Hashtag hashtag;
 
     public static PostHashtagMap createPostHashtag(Post post, Hashtag hashtag) {
-        PostHashtagMap postHashtagMap = new PostHashtagMap();
         PostHashtagId postHashtagId = new PostHashtagId(post.getId(), hashtag.getId());
+
+        PostHashtagMap postHashtagMap = new PostHashtagMap();
         postHashtagMap.setId(postHashtagId);
         postHashtagMap.setPost(post);
         postHashtagMap.setHashtag(hashtag);

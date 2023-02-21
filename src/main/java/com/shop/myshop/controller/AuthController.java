@@ -1,8 +1,8 @@
 package com.shop.myshop.controller;
 
 import com.shop.myshop.domain.Member;
-import com.shop.myshop.dto.MemberInsertRequestDTO;
-import com.shop.myshop.dto.MemberResponseDTO;
+import com.shop.myshop.dto.MemberInsertRequest;
+import com.shop.myshop.dto.MemberResponse;
 import com.shop.myshop.security.TokenProvider;
 import com.shop.myshop.service.MemberService;
 import com.shop.myshop.utils.CookieHelper;
@@ -31,7 +31,7 @@ public class AuthController {
             ResponseData data;
 
             if (member != null) {
-                MemberResponseDTO memberRes = new MemberResponseDTO(member);
+                MemberResponse memberRes = new MemberResponse(member);
                 final String token = tokenProvider.create(memberRes.toEntity());
                 memberRes.setToken(token);
                 CookieHelper.insert(response, "Authorization", token);
@@ -46,8 +46,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ResponseData> createMember(@RequestBody MemberInsertRequestDTO dto, HttpServletResponse response) {
-        MemberResponseDTO member = new MemberResponseDTO(memberService.join(dto.toEntity()));
+    public ResponseEntity<ResponseData> createMember(@RequestBody MemberInsertRequest dto, HttpServletResponse response) {
+        MemberResponse member = new MemberResponse(memberService.join(dto.toEntity()));
 
         final String token = tokenProvider.create(member.toEntity());
         member.setToken(token);

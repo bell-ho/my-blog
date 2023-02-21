@@ -26,10 +26,15 @@ public class PostServiceImpl implements PostService {
     private final PostHashtagMapRepository postHashtagMapRepository;
 
     @Override
+    public List<Post> getPosts() {
+        return postRepository.findAll();
+    }
+
+    @Override
     @Transactional
-    public Post createPost(String memberUniqueKey, List<String> hashtags) {
+    public Post createPost(String memberUniqueKey, String content, List<String> hashtags) {
         Member member = memberRepository.findByUniqueKey(memberUniqueKey).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
-        Post savedPost = postRepository.save(Post.createPost(member));
+        Post savedPost = postRepository.save(Post.createPost(member, content));
 
         hashtags.forEach((v) -> {
             if (!validateDuplicateTag(v)) {

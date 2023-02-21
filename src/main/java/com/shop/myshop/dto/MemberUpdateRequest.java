@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
-public class MemberUpdateRequestDTO {
+public class MemberUpdateRequest {
 
     @NotEmpty(message = "필수 값")
     private String name;

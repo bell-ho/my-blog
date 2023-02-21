@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MemberResponseDTO {
+public class MemberResponse {
 
     private Long id;
     private String email;
@@ -16,7 +16,7 @@ public class MemberResponseDTO {
     private String nickName;
 
     @Builder
-    public MemberResponseDTO(Member entity) {
+    public MemberResponse(Member entity) {
         if (entity != null) {
             this.email = entity.getEmail() != null ? entity.getEmail() : "";
             this.name = entity.getName();

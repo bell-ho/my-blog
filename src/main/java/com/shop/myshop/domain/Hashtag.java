@@ -12,14 +12,14 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Hashtag {
+public class Hashtag extends BaseEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Long id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
 
     @OneToMany(mappedBy = "hashtag")

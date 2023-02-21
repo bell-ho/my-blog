@@ -10,10 +10,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class PostHashtagId implements Serializable {
 
-    @Column(name="post_id")
+    @Column(name = "post_id")
     private Long postId;
 
-    @Column(name="hashtag_id")
+    @Column(name = "hashtag_id")
     private Long hashtagId;
 
     public PostHashtagId(Long postId, Long hashtagId) {

@@ -6,24 +6,27 @@ import javax.persistence.*;
 
 import static javax.persistence.FetchType.LAZY;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "images")
+@Table(name = "post_like_dislike")
 @Builder
 @Getter
 @Setter
 @Entity
-public class Images extends BaseEntity {
-
+public class PostLikeDislike extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "src")
-    private String src;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @Enumerated(EnumType.STRING)
+    private LikeDislikeType type;
 }
