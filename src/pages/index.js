@@ -5,7 +5,11 @@ import AllPosts from '@/components/posts/AllPosts';
 export default function Home() {
   const data = useAllPostsQuery();
 
-  return <Fragment>{<AllPosts posts={data} />}</Fragment>;
+  return (
+    <Fragment>
+      <AllPosts posts={data} />
+    </Fragment>
+  );
 }
 
 // export async function getStaticProps() {

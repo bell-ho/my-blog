@@ -70,11 +70,13 @@ const ContactForm = () => {
 
   const createPostMutation = useMutation((params) => createPost(params), {
     onSuccess: () => {
-      queryClient.invalidateQueries([queryKey.posts.all]);
+      queryClient.invalidateQueries([queryKey.posts]);
+      contentInputRef.current.value = '';
       setRequestStatus('success');
     },
     onError: (e) => {
       setRequestError(e.message);
+      contentInputRef.current.value = '';
       setRequestStatus('error');
     },
   });

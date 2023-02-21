@@ -12,7 +12,7 @@ export const useFeaturedPostsQuery = () => {
 };
 
 export const useAllPostsQuery = () => {
-  const { data } = useQuery([queryKey.posts.all], getPosts, {
+  const { data } = useQuery([queryKey.posts], getPosts, {
     ...commentOptions(5000, 10000),
   });
   return data;

@@ -3,8 +3,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import classes from './post-item.module.css';
 import styled from '@emotion/styled';
+import { useSession } from 'next-auth/react';
 
-const PostItem = ({ post: { id, content, nickName, images, createDate } }) => {
+const PostItem = ({
+  post: { id, content, nickName, postLikeDislikes, images, createDate },
+  onLike,
+}) => {
+  const { data: session, status } = useSession();
+
   // const { src } = images[0];
 
   return (
@@ -40,7 +46,10 @@ const PostItem = ({ post: { id, content, nickName, images, createDate } }) => {
             </p>
             <div className="icon">
               <div className={'left'}>
-                <span className="material-icons-with-text">
+                <span
+                  onClick={() => onLike(id, session.user?.id)}
+                  className="material-icons-with-text"
+                >
                   <i className="material-icons">thumb_up_off_alt</i>
                   123
                 </span>
@@ -72,7 +81,6 @@ const ContentWrapper = styled.div`
   }
 
   .bottom {
-    display: flex;
     align-self: flex-start;
   }
 
