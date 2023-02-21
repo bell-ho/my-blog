@@ -34,4 +34,13 @@ public class PostController {
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("postId", postId);
         return ResponseEntity.ok(data);
     }
+
+    @PatchMapping("/{postId}/like/{memberUniqueKey}")
+    public ResponseEntity<?> likePost(@PathVariable Long postId, @PathVariable String memberUniqueKey) {
+
+        postService.likePost(postId, memberUniqueKey);
+
+        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("postId", "postId");
+        return ResponseEntity.ok(data);
+    }
 }

@@ -1,13 +1,7 @@
 package com.shop.myshop.service;
 
-import com.shop.myshop.domain.Hashtag;
-import com.shop.myshop.domain.Member;
-import com.shop.myshop.domain.Post;
-import com.shop.myshop.domain.PostHashtagMap;
-import com.shop.myshop.repository.HashtagRepository;
-import com.shop.myshop.repository.MemberRepository;
-import com.shop.myshop.repository.PostHashtagMapRepository;
-import com.shop.myshop.repository.PostRepository;
+import com.shop.myshop.domain.*;
+import com.shop.myshop.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +18,17 @@ public class PostServiceImpl implements PostService {
     private final MemberRepository memberRepository;
     private final HashtagRepository hashTagRepository;
     private final PostHashtagMapRepository postHashtagMapRepository;
+    private final PostLikeDislikeRepository postLikeDislikeRepository;
+
+    @Override
+    @Transactional
+    public PostLikeDislike likePost(Long postId, String memberUniqueKey) {
+        Member member = memberRepository.findByUniqueKey(memberUniqueKey).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
+
+
+        return null;
+    }
 
     @Override
     public List<Post> getPosts() {
