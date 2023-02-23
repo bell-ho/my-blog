@@ -1,7 +1,9 @@
 package com.shop.myshop.controller;
 
 import com.shop.myshop.domain.Post;
+import com.shop.myshop.domain.PostLikeDislike;
 import com.shop.myshop.dto.PostInsertRequest;
+import com.shop.myshop.dto.PostLikeDislikeResponse;
 import com.shop.myshop.dto.PostResponse;
 import com.shop.myshop.service.PostService;
 import com.shop.myshop.utils.RequestResultEnum;
@@ -35,12 +37,12 @@ public class PostController {
         return ResponseEntity.ok(data);
     }
 
-    @PatchMapping("/{postId}/like/{memberUniqueKey}")
-    public ResponseEntity<?> likePost(@PathVariable Long postId, @PathVariable String memberUniqueKey) {
+    @PostMapping("/{postId}/type/{type}/member/{memberUniqueKey}")
+    public ResponseEntity<?> likeDislikePost(@PathVariable Long postId, @PathVariable String memberUniqueKey, @PathVariable String type) {
 
-        postService.likePost(postId, memberUniqueKey);
+        PostLikeDislikeResponse postLikeDislike = new PostLikeDislikeResponse(postService.likeDislikePost(postId, memberUniqueKey, type));
 
-        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("postId", "postId");
+        ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("postLikeDislike", postLikeDislike);
         return ResponseEntity.ok(data);
     }
 }

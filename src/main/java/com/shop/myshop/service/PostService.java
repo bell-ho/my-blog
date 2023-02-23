@@ -10,5 +10,5 @@ public interface PostService {
 
     List<Post> getPosts();
 
-    PostLikeDislike likePost(Long postId, String memberUniqueKey);
+    PostLikeDislike likeDislikePost(Long postId, String memberUniqueKey,String type);
 }

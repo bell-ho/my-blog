@@ -3,6 +3,7 @@ package com.shop.myshop.service;
 import com.shop.myshop.domain.*;
 import com.shop.myshop.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,17 +23,19 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public PostLikeDislike likePost(Long postId, String memberUniqueKey) {
+    public PostLikeDislike likeDislikePost(Long postId, String memberUniqueKey, String type) {
         Member member = memberRepository.findByUniqueKey(memberUniqueKey).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
 
+        LikeDislikeType likeDislikeType = LikeDislikeType.valueOf(type.toUpperCase());
+        PostLikeDislike postLikeDislike = PostLikeDislike.createPostLikeDislike(post, member, likeDislikeType);
 
-        return null;
+        return postLikeDislikeRepository.save(postLikeDislike);
     }
 
     @Override
     public List<Post> getPosts() {
-        return postRepository.findAll();
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
     }
 
     @Override

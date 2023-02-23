@@ -29,4 +29,12 @@ public class PostLikeDislike extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private LikeDislikeType type;
+
+    public static PostLikeDislike createPostLikeDislike(Post post, Member member, LikeDislikeType type) {
+        PostLikeDislike postLikeDislike = new PostLikeDislike();
+        postLikeDislike.setPost(post);
+        postLikeDislike.setMember(member);
+        postLikeDislike.setType(type);
+        return postLikeDislike;
+    }
 }

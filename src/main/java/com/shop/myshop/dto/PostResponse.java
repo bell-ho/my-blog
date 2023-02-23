@@ -48,13 +48,13 @@ public class PostResponse {
     public static class PostLikeDislikeDTO {
         private Long id;
         private String memberUniqueKey;
-        private LikeDislikeType type;
+        private String type;
 
         @Builder
         public PostLikeDislikeDTO(PostLikeDislike entity) {
             this.id = entity.getId();
             this.memberUniqueKey = entity.getMember().getUniqueKey();
-            this.type = entity.getType();
+            this.type = entity.getType().name().toLowerCase();
         }
     }
 
