@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React, { Children, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classes from './post-item.module.css';
@@ -7,11 +7,32 @@ import { useSession } from 'next-auth/react';
 
 const PostItem = ({
   post: { id, content, nickName, postLikeDislikes, images, createDate },
-  onLike,
+  onThumbClick,
 }) => {
   const { data: session, status } = useSession();
 
   // const { src } = images[0];
+
+  const likeCnt = postLikeDislikes.filter((v) => v.type === 'like').length;
+  const dislikeCnt = postLikeDislikes.filter((v) => v.type === 'dislike').length;
+
+  const likeMember = postLikeDislikes.find(
+    (v) => v.type === 'like' && v.memberUniqueKey === session.user.id,
+  );
+  const dislikeMember = postLikeDislikes.find(
+    (v) => v.type === 'dislike' && v.memberUniqueKey === session.user.id,
+  );
+
+  const existThumb = useCallback(
+    (fn) => {
+      if (likeMember || dislikeMember) {
+        console.log('하나의 게시물에 하나의 엄지만');
+        return false;
+      }
+      fn();
+    },
+    [dislikeMember, likeMember],
+  );
 
   return (
     <Wrapper>
@@ -46,16 +67,23 @@ const PostItem = ({
             </p>
             <div className="icon">
               <div className={'left'}>
-                <span
-                  onClick={() => onLike(id, session.user?.id)}
-                  className="material-icons-with-text"
-                >
-                  <i className="material-icons">thumb_up_off_alt</i>
-                  123
+                <span className="material-icons-with-text">
+                  <i
+                    className="material-icons"
+                    onClick={() => existThumb(() => onThumbClick(id, 'like', session.user?.id))}
+                  >
+                    {likeMember ? 'thumb_up_alt' : 'thumb_up_off_alt'}
+                  </i>
+                  {likeCnt}
                 </span>
                 <span className="material-icons-with-text">
-                  <i className="material-icons">thumb_down_off_alt</i>
-                  12
+                  <i
+                    className="material-icons"
+                    onClick={() => existThumb(() => onThumbClick(id, 'dislike', session.user?.id))}
+                  >
+                    {dislikeMember ? 'thumb_down_alt' : 'thumb_down_off_alt'}
+                  </i>
+                  {dislikeCnt}
                 </span>
               </div>
               <span className="material-icons">delete</span>

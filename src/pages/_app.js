@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { queryClient } from '@/react-query/queryClient';
 import { Hydrate, QueryClientProvider } from '@tanstack/react-query';
 import { SessionProvider } from 'next-auth/react';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 export default function App({ Component, pageProps }) {
   const queryClientRef = useRef();
   if (!queryClientRef.current) {
@@ -16,6 +17,7 @@ export default function App({ Component, pageProps }) {
         <Hydrate state={pageProps.dehydratedState}>
           <Layout>
             <Component {...pageProps} />
+            <ReactQueryDevtools />
           </Layout>
         </Hydrate>
       </QueryClientProvider>

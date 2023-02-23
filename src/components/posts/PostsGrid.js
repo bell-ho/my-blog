@@ -8,22 +8,28 @@ import { likePost } from '@/pages/api/post/post';
 const PostsGrid = ({ posts }) => {
   const queryClient = useQueryClient();
 
-  const likePostMutation = useMutation((params) => likePost(params), {
+  const likeDislikePostMutation = useMutation((params) => likePost(params), {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.posts]);
     },
   });
-  const onLike = useCallback(
-    async (postId, memberUniqueKey) => {
-      await likePostMutation.mutate({ postId, memberUniqueKey });
+
+  const onThumbClick = useCallback(
+    async (postId, type, memberUniqueKey) => {
+      await likeDislikePostMutation.mutate({ postId, type, memberUniqueKey });
     },
-    [likePostMutation],
+    [likeDislikePostMutation],
   );
+
   return (
     // <ul className={classes.grid}>
     <Fragment>
       <ContactForm />
-      <ul>{Children.toArray(posts?.map((post) => <PostItem post={post} onLike={onLike} />))}</ul>
+      <ul>
+        {Children.toArray(
+          posts?.map((post) => <PostItem post={post} onThumbClick={onThumbClick} />),
+        )}
+      </ul>
     </Fragment>
   );
 };

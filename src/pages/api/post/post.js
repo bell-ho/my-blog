@@ -11,6 +11,10 @@ export const getPosts = async () => {
   return data.data.posts;
 };
 
-export const likePost = async ({ postId, memberUniqueKey }) => {
-  const { data } = await axios.patch(`/api/v1/post/${postId}/like/${memberUniqueKey}`);
+export const likePost = async ({ postId, type, memberUniqueKey }) => {
+  const { data } = await axios.post(
+    `/api/v1/post/${postId}/type/${type}/member/${memberUniqueKey}`,
+  );
+
+  return data.data.postLikeDislike;
 };
