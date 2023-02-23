@@ -1,9 +1,10 @@
-import React, { Children, useCallback } from 'react';
+import React, { Children, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classes from './post-item.module.css';
 import styled from '@emotion/styled';
 import { useSession } from 'next-auth/react';
+import Notification from '@/components/ui/notification';
 
 const PostItem = ({
   post: { id, content, nickName, postLikeDislikes, images, createDate },
@@ -26,13 +27,52 @@ const PostItem = ({
   const existThumb = useCallback(
     (fn) => {
       if (likeMember || dislikeMember) {
-        console.log('하나의 게시물에 하나의 엄지만');
+        setRequestError('이미 눌렀어요.');
+        setRequestStatus('error');
         return false;
       }
       fn();
     },
     [dislikeMember, likeMember],
   );
+
+  const [requestStatus, setRequestStatus] = useState('');
+  const [requestError, setRequestError] = useState('');
+
+  const notification = useCallback(
+    (requestStatus) => {
+      const result = {
+        pending: {
+          status: 'pending',
+          title: 'sending message',
+          message: 'message is on its way',
+        },
+        success: {
+          status: 'success',
+          title: 'success',
+          message: 'message success',
+        },
+        error: {
+          status: 'error',
+          title: 'Error',
+          message: requestError,
+        },
+      };
+      return result[requestStatus] ?? result.pending;
+    },
+    [requestError],
+  );
+
+  useEffect(() => {
+    if (requestStatus === 'success' || requestStatus === 'error') {
+      const timer = setTimeout(() => {
+        setRequestStatus(null);
+        setRequestError(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [requestStatus]);
 
   return (
     <Wrapper>
@@ -74,7 +114,7 @@ const PostItem = ({
                   >
                     {likeMember ? 'thumb_up_alt' : 'thumb_up_off_alt'}
                   </i>
-                  {likeCnt}
+                  <div>{likeCnt}</div>
                 </span>
                 <span className="material-icons-with-text">
                   <i
@@ -83,7 +123,7 @@ const PostItem = ({
                   >
                     {dislikeMember ? 'thumb_down_alt' : 'thumb_down_off_alt'}
                   </i>
-                  {dislikeCnt}
+                  <div>{dislikeCnt}</div>
                 </span>
               </div>
               <span className="material-icons">delete</span>
@@ -91,6 +131,7 @@ const PostItem = ({
           </ContentWrapper>
         </div>
       </li>
+      {requestStatus && <Notification result={notification(requestStatus)} />}
     </Wrapper>
   );
 };
@@ -121,7 +162,7 @@ const ContentWrapper = styled.div`
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-      gap: 10px;
+      gap: 15px;
     }
   }
 

@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 import { createPost } from '@/pages/api/post/post';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
+import { uploadImages } from '@/util/uploadFileToS3';
 
 const ContactForm = () => {
   const queryClient = useQueryClient();
@@ -16,17 +17,12 @@ const ContactForm = () => {
   const contentInputRef = useRef(null);
 
   const imageButtonClick = useCallback((e) => {
-    imageInputRef.current.click();
+    imageInputRef.current?.click();
   }, []);
 
-  const onUploadImage = useCallback((e) => {
-    const imageFormData = new FormData();
-    const reg = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
-    [].forEach.call(e.target.files, (f) => {
-      if (f.name.match(reg)) {
-        imageFormData.append('image', f);
-      }
-    });
+  const onUploadImage = useCallback(async (e) => {
+    const imageUrls = await uploadImages(Array.from(e.target.files));
+    console.log(imageUrls);
   }, []);
 
   const [requestStatus, setRequestStatus] = useState(''); // 'pending', 'success', 'error'
@@ -59,7 +55,7 @@ const ContactForm = () => {
         },
         error: {
           status: 'error',
-          title: 'sending error',
+          title: 'Error',
           message: requestError,
         },
       };
@@ -86,6 +82,12 @@ const ContactForm = () => {
       e.preventDefault();
 
       const content = contentInputRef.current.value;
+
+      if (!content || !content.trim()) {
+        setRequestError('게시물을 등록해주세요.');
+        setRequestStatus('error');
+        return;
+      }
 
       const hashtags = Array.from(
         new Set(content.match(/#[^\s#]+/g)?.map((v) => v.slice(1).toLowerCase())),
@@ -116,14 +118,17 @@ const ContactForm = () => {
 
         <ButtonWrapper>
           <div className={classes.control}>
-            <button onClick={imageButtonClick}>이미지 업로드</button>
+            <button type={'button'} onClick={imageButtonClick}>
+              이미지 업로드
+            </button>
             <input
-              id={'images'}
               type="file"
+              name="image"
+              multiple
+              hidden
               accept="image/*"
               ref={imageInputRef}
               onChange={onUploadImage}
-              style={{ display: 'none' }}
             />
           </div>
           <div className={classes.actions}>
@@ -132,7 +137,7 @@ const ContactForm = () => {
         </ButtonWrapper>
       </form>
 
-      {requestStatus && <Notification result={notification(requestStatus)}></Notification>}
+      {requestStatus && <Notification result={notification(requestStatus)} />}
     </section>
   );
 };

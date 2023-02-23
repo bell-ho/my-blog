@@ -1,8 +1,10 @@
 import ReactDOM from 'react-dom';
 
 import classes from './notification.module.css';
+import { useEffect, useState } from 'react';
 
 function Notification({ result: { title, message, status } }) {
+  const [showNotification, setShowNotification] = useState(false);
   let statusClasses = '';
 
   if (status === 'success') {
@@ -13,7 +15,18 @@ function Notification({ result: { title, message, status } }) {
     statusClasses = classes.error;
   }
 
-  const cssClasses = `${classes.notification} ${statusClasses}`;
+  const cssClasses = `${classes.notification} ${statusClasses} ${
+    showNotification ? classes.show : ''
+  }`;
+
+  useEffect(() => {
+    if (showNotification) {
+      const timer = setTimeout(() => {
+        setShowNotification(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showNotification]);
 
   return ReactDOM.createPortal(
     <div className={cssClasses}>

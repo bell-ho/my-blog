@@ -64,3 +64,8 @@ button {
     font: inherit;
     cursor: pointer;
 }
+
+.material-icons-with-text {
+    cursor: pointer;
+    gap: 5px;
+}

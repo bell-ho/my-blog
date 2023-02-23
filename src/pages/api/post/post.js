@@ -18,3 +18,9 @@ export const likePost = async ({ postId, type, memberUniqueKey }) => {
 
   return data.data.postLikeDislike;
 };
+
+export const uploadImagesAPI = async (params) => {
+  // const { data } = await axios.post('/post/images', params);
+  // return data;
+  // return params;
+};

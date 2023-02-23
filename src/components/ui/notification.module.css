@@ -13,6 +13,16 @@
   left: 0;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
+
+  /*opacity: 0;*/
+  /*transition: opacity 0.3s ease-in-out;*/
+  /*transition: transform 0.3s ease-in-out;*/
+  /*transform: translateY(100%);*/
+}
+
+.notification.show {
+  /*opacity: 1;*/
+  /*transform: translateY(0);*/
 }
 
 .notification h2 {
@@ -39,5 +49,12 @@
     left: calc(50% - 20rem);
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
+
+    /*opacity: 0;*/
+    /*transition: opacity 0.3s ease-in-out;*/
+  }
+
+  .notification.show {
+    /*opacity: 1;*/
   }
 }
