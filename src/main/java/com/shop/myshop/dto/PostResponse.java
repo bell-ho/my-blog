@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +32,7 @@ public class PostResponse {
     private List<PostLikeDislikeDTO> postLikeDislikes = new ArrayList<>();
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Timestamp createDate;
+    private LocalDateTime createDate;
 
     @Builder
     public PostResponse(Post post) {
@@ -40,7 +41,7 @@ public class PostResponse {
         this.nickName = post.getMember().getNickName();
         this.postLikeDislikes = post.getPostLikeDislikes().stream().map(PostLikeDislikeDTO::new).collect(Collectors.toList());
         this.images = post.getImages().stream().map(ImagesDTO::new).collect(Collectors.toList());
-        this.createDate = Timestamp.valueOf(post.getCreatedDate());
+        this.createDate = post.getCreatedDate();
     }
 
     @Getter
