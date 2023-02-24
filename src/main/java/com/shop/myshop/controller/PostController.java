@@ -6,6 +6,7 @@ import com.shop.myshop.dto.PostInsertRequest;
 import com.shop.myshop.dto.PostLikeDislikeResponse;
 import com.shop.myshop.dto.PostResponse;
 import com.shop.myshop.service.PostService;
+import com.shop.myshop.utils.PageResponse;
 import com.shop.myshop.utils.RequestResultEnum;
 import com.shop.myshop.utils.ResponseData;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,12 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("")
-    public ResponseEntity<?> getPosts() {
-        List<PostResponse> posts = postService.getPosts().stream().map(PostResponse::new).collect(Collectors.toList());
+    public ResponseEntity<?> getPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        PageResponse<PostResponse> posts = postService.getPosts(page, size);
+
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("posts", posts);
         return ResponseEntity.ok(data);
     }
@@ -31,7 +36,13 @@ public class PostController {
     @PostMapping("")
     public ResponseEntity<?> createPost(@RequestBody PostInsertRequest dto) {
 
-        Long postId = postService.createPost(dto.getMember().getUniqueKey(), dto.getContent(), dto.getHashtags(),dto.getImages()).getId();
+        Long postId = postService.createPost(
+                        dto.getMember().getUniqueKey(),
+                        dto.getContent(),
+                        dto.getHashtags(),
+                        dto.getImages(),
+                        dto.isHide())
+                .getId();
 
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("postId", postId);
         return ResponseEntity.ok(data);

@@ -13,6 +13,7 @@ public class PostInsertRequest {
     private List<String> hashtags = new ArrayList<>();
     private String content;
     private List<String> images = new ArrayList<>();
+    private boolean hide;
 
     @Data
     @NoArgsConstructor

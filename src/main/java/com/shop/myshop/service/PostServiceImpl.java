@@ -1,7 +1,11 @@
 package com.shop.myshop.service;
 
+import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.myshop.domain.*;
+import com.shop.myshop.dto.PostResponse;
 import com.shop.myshop.repository.*;
+import com.shop.myshop.utils.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -9,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -21,6 +26,7 @@ public class PostServiceImpl implements PostService {
     private final PostHashtagMapRepository postHashtagMapRepository;
     private final PostLikeDislikeRepository postLikeDislikeRepository;
     private final ImagesRepository imagesRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Override
     @Transactional
@@ -35,15 +41,41 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPosts() {
-        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdDate"));
+    public PageResponse<PostResponse> getPosts(int page, int size) {
+        QPost post = QPost.post;
+        QImages images = QImages.images;
+        QPostLikeDislike postLikeDislike = QPostLikeDislike.postLikeDislike;
+
+        JPAQuery<Post> query = queryFactory.selectDistinct(post)
+                .from(post)
+                .leftJoin(post.images, images).fetchJoin()
+                .leftJoin(post.postLikeDislikes, postLikeDislike).fetchJoin()
+                .orderBy(post.createdDate.desc());
+
+        query.where(post.hide.eq(false));
+
+        long totalCount = query.fetchCount();
+
+        List<Post> posts = query
+                .offset((long) page * size)
+                .limit(size)
+                .fetch();
+
+        List<PostResponse> content = posts.stream()
+                .map(PostResponse::new)
+                .collect(Collectors.toList());
+
+        int totalPage = (int) Math.ceil((double) totalCount / size);
+        boolean isLast = (long) (page + 1) * size >= totalCount;
+
+        return new PageResponse<>(content, page, size, totalCount, totalPage, isLast);
     }
 
     @Override
     @Transactional
-    public Post createPost(String memberUniqueKey, String content, List<String> hashtags, List<String> images) {
+    public Post createPost(String memberUniqueKey, String content, List<String> hashtags, List<String> images, boolean isHide) {
         Member member = memberRepository.findByUniqueKey(memberUniqueKey).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
-        Post savedPost = postRepository.save(Post.createPost(member, content));
+        Post savedPost = postRepository.save(Post.createPost(member, content, isHide));
 
         hashtags.forEach((v) -> {
             if (!validateDuplicateTag(v)) {
@@ -55,7 +87,7 @@ public class PostServiceImpl implements PostService {
             }
         });
 
-        images.forEach(v->{
+        images.forEach(v -> {
             imagesRepository.save(Images.createImage(savedPost, v));
         });
 
