@@ -12,6 +12,7 @@ public class PostInsertRequest {
     private MemberDTO member;
     private List<String> hashtags = new ArrayList<>();
     private String content;
+    private List<String> images = new ArrayList<>();
 
     @Data
     @NoArgsConstructor

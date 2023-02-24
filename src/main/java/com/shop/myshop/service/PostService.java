@@ -6,7 +6,7 @@ import com.shop.myshop.domain.PostLikeDislike;
 import java.util.List;
 
 public interface PostService {
-    Post createPost(String memberUniqueKey, String content, List<String> hashtags);
+    Post createPost(String memberUniqueKey, String content, List<String> hashtags,List<String> images);
 
     List<Post> getPosts();
 

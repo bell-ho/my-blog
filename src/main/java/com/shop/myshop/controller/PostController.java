@@ -31,7 +31,7 @@ public class PostController {
     @PostMapping("")
     public ResponseEntity<?> createPost(@RequestBody PostInsertRequest dto) {
 
-        Long postId = postService.createPost(dto.getMember().getUniqueKey(), dto.getContent(), dto.getHashtags()).getId();
+        Long postId = postService.createPost(dto.getMember().getUniqueKey(), dto.getContent(), dto.getHashtags(),dto.getImages()).getId();
 
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("postId", postId);
         return ResponseEntity.ok(data);

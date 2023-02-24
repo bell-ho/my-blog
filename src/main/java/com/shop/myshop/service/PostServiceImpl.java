@@ -20,6 +20,7 @@ public class PostServiceImpl implements PostService {
     private final HashtagRepository hashTagRepository;
     private final PostHashtagMapRepository postHashtagMapRepository;
     private final PostLikeDislikeRepository postLikeDislikeRepository;
+    private final ImagesRepository imagesRepository;
 
     @Override
     @Transactional
@@ -40,7 +41,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public Post createPost(String memberUniqueKey, String content, List<String> hashtags) {
+    public Post createPost(String memberUniqueKey, String content, List<String> hashtags, List<String> images) {
         Member member = memberRepository.findByUniqueKey(memberUniqueKey).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
         Post savedPost = postRepository.save(Post.createPost(member, content));
 
@@ -52,6 +53,10 @@ public class PostServiceImpl implements PostService {
                 Hashtag existedHashtag = hashTagRepository.findByName(v).get();
                 postHashtagMapRepository.save(PostHashtagMap.createPostHashtag(savedPost, existedHashtag));
             }
+        });
+
+        images.forEach(v->{
+            imagesRepository.save(Images.createImage(savedPost, v));
         });
 
         return savedPost;
