@@ -8,10 +8,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
 import { uploadImages } from '@/util/uploadFileToS3';
 import ImageBox from '@/components/contact/ImageBox';
+import Checkbox from '@/components/ui/Checkbox';
 
 const ContactForm = () => {
   const queryClient = useQueryClient();
-
+  const [hide, setHide] = useState(false);
   const { data: session, status } = useSession();
 
   const imageInputRef = useRef(null);
@@ -37,6 +38,7 @@ const ContactForm = () => {
 
   const [requestStatus, setRequestStatus] = useState(''); // 'pending', 'success', 'error'
   const [requestError, setRequestError] = useState('');
+  const [requestSuccess, setRequestSuccess] = useState('');
   const [imagePaths, setImagePaths] = useState([]);
 
   useEffect(() => {
@@ -60,8 +62,8 @@ const ContactForm = () => {
         },
         success: {
           status: 'success',
-          title: 'sending success',
-          message: 'message success',
+          title: 'Success',
+          message: requestSuccess,
         },
         error: {
           status: 'error',
@@ -71,20 +73,23 @@ const ContactForm = () => {
       };
       return result[requestStatus] ?? result.pending;
     },
-    [requestError],
+    [requestError, requestSuccess],
   );
 
   const createPostMutation = useMutation((params) => createPost(params), {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.posts]);
-      contentInputRef.current.value = '';
-      setImagePaths([]);
       setRequestStatus('success');
+      setRequestSuccess('등록 완료');
     },
     onError: (e) => {
       setRequestError(e.message);
-      contentInputRef.current.value = '';
       setRequestStatus('error');
+    },
+    onSettled: () => {
+      contentInputRef.current.value = '';
+      setImagePaths([]);
+      setHide(false);
     },
   });
 
@@ -95,7 +100,13 @@ const ContactForm = () => {
       const content = contentInputRef.current.value;
 
       if (!content || !content.trim()) {
-        setRequestError('해시태그를 등록해주세요.');
+        setRequestError('게시물을 등록해주세요.');
+        setRequestStatus('error');
+        return;
+      }
+
+      if (imagePaths.length > 5) {
+        setRequestError('사진은 5장 까지 가능합니다.');
         setRequestStatus('error');
         return;
       }
@@ -111,11 +122,12 @@ const ContactForm = () => {
         content,
         hashtags,
         images: imagePaths,
+        hide,
       };
 
       await createPostMutation.mutate(params);
     },
-    [createPostMutation, imagePaths, session?.user?.id],
+    [createPostMutation, hide, imagePaths, session?.user?.id],
   );
 
   const onRemoveImage = useCallback(
@@ -146,8 +158,16 @@ const ContactForm = () => {
           onChange={onUploadImage}
         />
 
-        <input ref={contentInputRef} type="text" id={'content'} />
-
+        <input
+          placeholder={'ex) #해시태그'}
+          ref={contentInputRef}
+          maxlength="15"
+          type="text"
+          id={'content'}
+        />
+        <Checkbox checked={hide} onChange={setHide}>
+          숨기기
+        </Checkbox>
         <button>등록</button>
       </form>
 
@@ -155,4 +175,14 @@ const ContactForm = () => {
     </section>
   );
 };
+const BottomWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+
+  button {
+    flex-grow: 1;
+  }
+`;
 export default ContactForm;

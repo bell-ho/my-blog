@@ -6,9 +6,11 @@ export const createPost = async (params) => {
   return data;
 };
 
-export const getPosts = async () => {
-  const { data } = await axios.get(`/api/v1/post`);
-  return data.data.posts;
+export const getPosts = async (page, size) => {
+  const { data } = await axios.get(`/api/v1/post`, { params: { page, size } });
+  const { content, isLast } = data.data.posts;
+  console.log(isLast);
+  return { content, nextPage: page + 1, isLast };
 };
 
 export const likePost = async ({ postId, type, memberUniqueKey }) => {

@@ -47,6 +47,9 @@ const SlideWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+
+  button {
+    margin-top: -1.5rem;
+  }
 `;
 export default ImageBox;

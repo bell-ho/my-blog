@@ -1,6 +1,6 @@
 .post {
     margin: var(--size-8) auto;
-    max-width: 50rem;
+    max-width: 25rem;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
     background-color: var(--color-grey-800);
     text-align: center;
@@ -15,7 +15,6 @@
 .image {
     border-radius: 10px;
     width: 100%;
-    max-height: 20rem;
     overflow: hidden;
 }
 
@@ -33,7 +32,6 @@
 }
 
 .content time {
-    font-style: italic;
     color: var(--color-grey-300);
 }
 

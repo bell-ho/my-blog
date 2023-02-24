@@ -22,7 +22,6 @@ const PostsGrid = ({ posts }) => {
   );
 
   return (
-    // <ul className={classes.grid}>
     <Fragment>
       <ContactForm />
       <ul>

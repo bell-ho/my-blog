@@ -1,18 +1,16 @@
 import React, { Children, useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import classes from './post-item.module.css';
 import styled from '@emotion/styled';
 import { useSession } from 'next-auth/react';
 import Notification from '@/components/ui/notification';
+import ImageSwiper from '@/components/ui/ImageSwiper';
 
 const PostItem = ({
   post: { id, content, nickName, postLikeDislikes, images, createDate },
   onThumbClick,
 }) => {
   const { data: session, status } = useSession();
-
-  // const { src } = images[0];
 
   const likeCnt = postLikeDislikes.filter((v) => v.type === 'like').length;
   const dislikeCnt = postLikeDislikes.filter((v) => v.type === 'dislike').length;
@@ -78,13 +76,7 @@ const PostItem = ({
     <Wrapper>
       <li className={classes.post}>
         <div className={classes.image}>
-          <Image
-            layout={'responsive'}
-            width={400}
-            height={300}
-            src={`/images/posts/getting-started-with-nextjs/getting-started-nextjs.png`}
-            alt={content}
-          />
+          <ImageSwiper imagePaths={images.map((v) => v.src)} />
         </div>
         <div className={classes.content}>
           <ContentWrapper>
@@ -98,7 +90,9 @@ const PostItem = ({
                   if (v.match(/(#[^\s#]+)/g)) {
                     return (
                       // <Link href={`/hashtag/${v.slice(1)}`} prefetch={false} key={i}>
-                      <Link href={`/`}>{v}</Link>
+                      <Link href={`/`} style={{ color: 'blue', fontWeight: 'bold' }}>
+                        {v}
+                      </Link>
                     );
                   }
                   return v;
@@ -126,7 +120,9 @@ const PostItem = ({
                   <div>{dislikeCnt}</div>
                 </span>
               </div>
-              <span className="material-icons">delete</span>
+              {/*<span className="material-icons-with-text">*/}
+              {/*  <i className="material-icons">delete</i>*/}
+              {/*</span>*/}
             </div>
           </ContentWrapper>
         </div>
@@ -142,6 +138,10 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  h4 {
+    font-weight: bold;
+  }
 
   .top {
     display: flex;

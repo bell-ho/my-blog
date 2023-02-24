@@ -3,6 +3,7 @@ import { getAllPosts, getFeaturedPosts, getPostData } from '@/util/posts-util';
 import { queryKey } from '@/react-query/constants';
 import { commentOptions } from '@/react-query/queryOptions';
 import { getPosts } from '@/pages/api/post/post';
+import { useRouter } from 'next/router';
 
 export const useFeaturedPostsQuery = () => {
   const { data } = useQuery([queryKey.posts.featured], getFeaturedPosts, {
@@ -12,7 +13,10 @@ export const useFeaturedPostsQuery = () => {
 };
 
 export const useAllPostsQuery = () => {
-  const { data } = useQuery([queryKey.posts], getPosts, {
+  const router = useRouter();
+  const { page: pageParam } = router.query;
+
+  const { data } = useQuery([queryKey.posts, 0, 5], () => getPosts(0, 5), {
     ...commentOptions(5000, 10000),
   });
   return data;
