@@ -69,3 +69,26 @@ button {
     cursor: pointer;
     gap: 5px;
 }
+
+/*.swiper {*/
+/*    width: 100%;*/
+/*    height: auto;*/
+/*}*/
+.swiper {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    --swiper-theme-color: #fff;
+}
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 200px;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+}

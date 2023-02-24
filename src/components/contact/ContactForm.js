@@ -7,6 +7,7 @@ import { createPost } from '@/pages/api/post/post';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
 import { uploadImages } from '@/util/uploadFileToS3';
+import ImageBox from '@/components/contact/ImageBox';
 
 const ContactForm = () => {
   const queryClient = useQueryClient();
@@ -21,8 +22,17 @@ const ContactForm = () => {
   }, []);
 
   const onUploadImage = useCallback(async (e) => {
-    const imageUrls = await uploadImages(Array.from(e.target.files));
-    console.log(imageUrls);
+    const reg = /(.*?)\.(jpg|jpeg|png|gif|bmp)$/;
+    const files = Array.from(e.target.files);
+
+    if (files.some((file) => !file.name.match(reg))) {
+      setRequestError('이미지만 올려요.');
+      setRequestStatus('error');
+      return false;
+    }
+
+    const imageUrls = await uploadImages(files);
+    setImagePaths((prev) => prev.concat(imageUrls));
   }, []);
 
   const [requestStatus, setRequestStatus] = useState(''); // 'pending', 'success', 'error'
@@ -68,6 +78,7 @@ const ContactForm = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.posts]);
       contentInputRef.current.value = '';
+      setImagePaths([]);
       setRequestStatus('success');
     },
     onError: (e) => {
@@ -84,7 +95,7 @@ const ContactForm = () => {
       const content = contentInputRef.current.value;
 
       if (!content || !content.trim()) {
-        setRequestError('게시물을 등록해주세요.');
+        setRequestError('해시태그를 등록해주세요.');
         setRequestStatus('error');
         return;
       }
@@ -99,51 +110,49 @@ const ContactForm = () => {
         },
         content,
         hashtags,
+        images: imagePaths,
       };
 
       await createPostMutation.mutate(params);
     },
-    [createPostMutation, session?.user?.id],
+    [createPostMutation, imagePaths, session?.user?.id],
+  );
+
+  const onRemoveImage = useCallback(
+    (index) => () => {
+      setImagePaths((prev) => {
+        return prev.filter((v, i) => i !== index);
+      });
+    },
+    [],
   );
 
   return (
     <section className={classes.contact}>
       <form className={classes.form} onSubmit={sendHandler}>
-        <div className={classes.controls}>
-          <div className={classes.control}>
-            <label htmlFor="content">Content</label>
-            <input ref={contentInputRef} type="text" id={'content'} />
-          </div>
-        </div>
+        <button type={'button'} onClick={imageButtonClick}>
+          ADD A FILE
+        </button>
 
-        <ButtonWrapper>
-          <div className={classes.control}>
-            <button type={'button'} onClick={imageButtonClick}>
-              이미지 업로드
-            </button>
-            <input
-              type="file"
-              name="image"
-              multiple
-              hidden
-              accept="image/*"
-              ref={imageInputRef}
-              onChange={onUploadImage}
-            />
-          </div>
-          <div className={classes.actions}>
-            <button>등록</button>
-          </div>
-        </ButtonWrapper>
+        <ImageBox onRemoveImage={onRemoveImage} imagePaths={imagePaths} />
+
+        <input
+          type="file"
+          name="image"
+          multiple
+          hidden
+          accept="image/*"
+          ref={imageInputRef}
+          onChange={onUploadImage}
+        />
+
+        <input ref={contentInputRef} type="text" id={'content'} />
+
+        <button>등록</button>
       </form>
 
       {requestStatus && <Notification result={notification(requestStatus)} />}
     </section>
   );
 };
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`;
 export default ContactForm;
