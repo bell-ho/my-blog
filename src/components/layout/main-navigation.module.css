@@ -3,21 +3,21 @@
     height: 5rem;
     background-color: var(--color-grey-900);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 0 10%;
+    /*padding: 0 10%;*/
 }
 
 .header ul {
     list-style: none;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     margin: 0;
     padding: 0;
 }
 
 .header li {
-    margin: 0 var(--size-4);
+    margin: 0 var(--size-8);
 }
 
 .header a {
@@ -33,7 +33,7 @@
 
 @media (min-width: 768px) {
     .header ul {
-        gap: 0.5rem;
+        gap: var(--size-40);
     }
 
     .header a {

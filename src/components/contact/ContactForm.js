@@ -76,6 +76,8 @@ const ContactForm = () => {
     [requestError, requestSuccess],
   );
 
+  const [isReadyToSubmit, setIsReadyToSubmit] = useState(true);
+
   const createPostMutation = useMutation((params) => createPost(params), {
     onSuccess: () => {
       queryClient.invalidateQueries([queryKey.posts]);
@@ -90,6 +92,11 @@ const ContactForm = () => {
       contentInputRef.current.value = '';
       setImagePaths([]);
       setHide(false);
+
+      setIsReadyToSubmit(false);
+      setTimeout(() => {
+        setIsReadyToSubmit(true);
+      }, 3000); // 3초 후 재등록 가능
     },
   });
 
@@ -125,9 +132,11 @@ const ContactForm = () => {
         hide,
       };
 
-      await createPostMutation.mutate(params);
+      if (isReadyToSubmit) {
+        await createPostMutation.mutate(params);
+      }
     },
-    [createPostMutation, hide, imagePaths, session?.user?.id],
+    [createPostMutation, hide, imagePaths, isReadyToSubmit, session?.user?.id],
   );
 
   const onRemoveImage = useCallback(
@@ -159,30 +168,41 @@ const ContactForm = () => {
         />
 
         <input
-          placeholder={'ex) #해시태그'}
+          placeholder={'ex) #해시태그 #멋있어요'}
           ref={contentInputRef}
           maxlength="15"
           type="text"
           id={'content'}
+          autoComplete={'off'}
+          autofocus
         />
-        <Checkbox checked={hide} onChange={setHide}>
-          숨기기
-        </Checkbox>
-        <button>등록</button>
+
+        <CheckWrapper>
+          <Checkbox checked={hide} onChange={setHide}>
+            숨기기
+          </Checkbox>
+          {hide && <h4>(숨겨도 해시태그로 검색 가능합니다.)</h4>}
+        </CheckWrapper>
+
+        <button disabled={!isReadyToSubmit}>등록</button>
       </form>
 
       {requestStatus && <Notification result={notification(requestStatus)} />}
     </section>
   );
 };
-const BottomWrapper = styled.div`
+const CheckWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 
-  button {
-    flex-grow: 1;
+  h4 {
+    margin-top: 10px;
+    font-size: var(--size-4);
+    color: #5252de;
   }
 `;
 export default ContactForm;

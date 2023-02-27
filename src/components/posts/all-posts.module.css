@@ -1,7 +1,7 @@
 .posts {
     width: 90%;
     max-width: 60rem;
-    margin: var(--size-8) auto;
+    margin: var(--size-1) auto;
 }
 
 .posts h1 {

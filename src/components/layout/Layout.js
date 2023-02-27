@@ -4,7 +4,7 @@ import MainNavigation from '@/components/layout/MainNavigation';
 const Layout = ({ children }) => {
   return (
     <Fragment>
-      <MainNavigation />
+      {/*<MainNavigation />*/}
       <main>{children}</main>
     </Fragment>
   );
