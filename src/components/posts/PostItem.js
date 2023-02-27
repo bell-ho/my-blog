@@ -101,20 +101,20 @@ const PostItem = ({
             </p>
             <div className="icon">
               <div className={'left'}>
-                <span className="material-icons-with-text">
-                  <i
-                    className="material-icons"
-                    onClick={() => existThumb(() => onThumbClick(id, 'like', session.user?.id))}
-                  >
+                <span
+                  className="material-icons-with-text"
+                  onClick={() => existThumb(() => onThumbClick(id, 'like', session.user?.id))}
+                >
+                  <i className="material-icons">
                     {likeMember ? 'thumb_up_alt' : 'thumb_up_off_alt'}
                   </i>
                   <div>{likeCnt}</div>
                 </span>
-                <span className="material-icons-with-text">
-                  <i
-                    className="material-icons"
-                    onClick={() => existThumb(() => onThumbClick(id, 'dislike', session.user?.id))}
-                  >
+                <span
+                  className="material-icons-with-text"
+                  onClick={() => existThumb(() => onThumbClick(id, 'dislike', session.user?.id))}
+                >
+                  <i className="material-icons">
                     {dislikeMember ? 'thumb_down_alt' : 'thumb_down_off_alt'}
                   </i>
                   <div>{dislikeCnt}</div>

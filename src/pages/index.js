@@ -1,68 +1,44 @@
-import { Fragment, useEffect, useRef } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useAllPostsQuery } from '@/query-hooks/usePosts';
 import { useInView } from 'react-intersection-observer';
 import AllPosts from '@/components/posts/AllPosts';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { queryKey } from '@/react-query/constants';
-import { getPosts } from '@/pages/api/post/post';
-import { useObserver } from '@/util/useObserver';
+import styled from '@emotion/styled';
+import MainNavigation from '@/components/layout/MainNavigation';
+import ScrollToTopButton from '@/components/ui/ScrollToTopButton';
 
-const PAGE_SIZE = 3;
 export default function Home() {
-  // const data = useAllPostsQuery();
   const { ref, inView } = useInView();
-  const bottom = useRef(null);
 
-  const { data, error, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } =
-    useInfiniteQuery(
-      [queryKey.posts],
-      ({ pageParam = 0, size = PAGE_SIZE }) => getPosts(pageParam, size),
-      {
-        getNextPageParam: (lastPage) => (!lastPage.isLast ? lastPage.nextPage : undefined),
-      },
-    );
+  const {
+    data,
+    fetchNextPage,
+    isLoading: loadPostsLoading,
+    handleKeywordChange,
+  } = useAllPostsQuery();
 
   const posts = data?.pages.flatMap((page) => page.content) || [];
+  const isEmpty = data?.pages[0]?.length === 0;
+  const isReachingEnd = isEmpty || (data && data.pages[data.pages.length - 1]?.length < 10);
+  const hasMorePosts = !isEmpty && !isReachingEnd;
+  const readToLoad = hasMorePosts && !loadPostsLoading;
 
   useEffect(() => {
-    if (inView) fetchNextPage();
-  }, [fetchNextPage, inView]);
-
-  if (status === 'loading') return <div>loading</div>;
-  if (status === 'error') return <div>error</div>;
-
-  // console.log(posts);
-
-  // const onIntersect = ([entry]) => entry.isIntersecting && fetchNextPage();
-  // useObserver({
-  //   target: bottom,
-  //   onIntersect,
-  // });
+    if (inView && readToLoad) {
+      fetchNextPage();
+    }
+  }, [inView, readToLoad, fetchNextPage]);
 
   return (
-    <Fragment>
+    <Wrapper>
+      <MainNavigation handleKeywordChange={handleKeywordChange} />
       <AllPosts posts={posts} />
-
-      {isFetchingNextPage ? <div>로딩</div> : <div ref={ref}></div>}
-    </Fragment>
+      <ScrollToTopButton />
+      <div ref={readToLoad ? ref : undefined} style={{ height: 50, backgroundColor: 'white' }} />
+    </Wrapper>
   );
 }
 
-// export async function getStaticProps() {
-//   const queryClient = new QueryClient();
-//
-//   try {
-//     await queryClient.prefetchQuery([queryKey.posts.featured], getFeaturedPosts);
-//
-//     return {
-//       props: {
-//         dehydratedState: dehydrate(queryClient),
-//       },
-//       revalidate: 60,
-//     };
-//   } catch (e) {
-//     return { hasError: true };
-//   } finally {
-//     queryClient.clear();
-//   }
-// }
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

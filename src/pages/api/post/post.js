@@ -6,10 +6,9 @@ export const createPost = async (params) => {
   return data;
 };
 
-export const getPosts = async (page, size) => {
-  const { data } = await axios.get(`/api/v1/post`, { params: { page, size } });
+export const getPosts = async (page, size, keyword = '') => {
+  const { data } = await axios.get(`/api/v1/post`, { params: { page, size, keyword } });
   const { content, isLast } = data.data.posts;
-  console.log(isLast);
   return { content, nextPage: page + 1, isLast };
 };
 
@@ -19,10 +18,4 @@ export const likePost = async ({ postId, type, memberUniqueKey }) => {
   );
 
   return data.data.postLikeDislike;
-};
-
-export const uploadImagesAPI = async (params) => {
-  // const { data } = await axios.post('/post/images', params);
-  // return data;
-  // return params;
 };

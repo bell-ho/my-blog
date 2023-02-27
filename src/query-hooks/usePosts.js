@@ -1,30 +1,38 @@
-import { useQuery } from '@tanstack/react-query';
-import { getAllPosts, getFeaturedPosts, getPostData } from '@/util/posts-util';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { queryKey } from '@/react-query/constants';
-import { commentOptions } from '@/react-query/queryOptions';
 import { getPosts } from '@/pages/api/post/post';
-import { useRouter } from 'next/router';
-
-export const useFeaturedPostsQuery = () => {
-  const { data } = useQuery([queryKey.posts.featured], getFeaturedPosts, {
-    ...commentOptions(5000, 10000),
-  });
-  return data;
-};
+import { usePageSearchUtil } from '@/util/usePageSearchUtil';
 
 export const useAllPostsQuery = () => {
-  const router = useRouter();
-  const { page: pageParam } = router.query;
+  const { keyword, handleKeywordChange } = usePageSearchUtil();
 
-  const { data } = useQuery([queryKey.posts, 0, 5], () => getPosts(0, 5), {
-    ...commentOptions(5000, 10000),
-  });
-  return data;
-};
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery(
+    [queryKey.posts, keyword],
+    ({ pageParam = 0, size = 3 }) => getPosts(pageParam, size, keyword),
+    {
+      getNextPageParam: (lastPage) => (!lastPage.isLast ? lastPage.nextPage : undefined),
+    },
+  );
 
-export const useOnePostQuery = (slug) => {
-  const { data } = useQuery([queryKey.post, slug], () => getPostData(slug), {
-    ...commentOptions(5000, 10000),
-  });
-  return data;
+  return {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isLoading,
+    isFetchingNextPage,
+    status,
+    keyword,
+    handleKeywordChange,
+  };
 };
