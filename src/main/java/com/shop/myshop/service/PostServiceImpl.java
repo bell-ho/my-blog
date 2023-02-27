@@ -7,13 +7,14 @@ import com.shop.myshop.dto.PostResponse;
 import com.shop.myshop.repository.*;
 import com.shop.myshop.utils.PageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.shop.myshop.utils.Common.keywordValidation;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,6 +32,11 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public PostLikeDislike likeDislikePost(Long postId, String memberUniqueKey, String type) {
+
+        if (postLikeDislikeRepository.existsByPostIdAndMemberUniqueKey(postId, memberUniqueKey)) {
+            return null;
+        }
+
         Member member = memberRepository.findByUniqueKey(memberUniqueKey).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
 
@@ -41,18 +47,29 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PageResponse<PostResponse> getPosts(int page, int size) {
+    public PageResponse<PostResponse> getPosts(int page, int size, String keyword) {
         QPost post = QPost.post;
         QImages images = QImages.images;
         QPostLikeDislike postLikeDislike = QPostLikeDislike.postLikeDislike;
+        QPostHashtagMap postHashtagMap = QPostHashtagMap.postHashtagMap;
+        QHashtag hashtag = QHashtag.hashtag;
 
         JPAQuery<Post> query = queryFactory.selectDistinct(post)
                 .from(post)
                 .leftJoin(post.images, images).fetchJoin()
                 .leftJoin(post.postLikeDislikes, postLikeDislike).fetchJoin()
+                .leftJoin(post.postHashtagMaps, postHashtagMap)
+                .leftJoin(postHashtagMap.hashtag, hashtag)
                 .orderBy(post.createdDate.desc());
 
-        query.where(post.hide.eq(false));
+        if (keywordValidation(keyword) != null) {
+            query.where(
+                    hashtag.name.eq(keyword)
+                            .and(post.hide.eq(false).or(post.hide.eq(true)))
+            );
+        } else {
+            query.where(post.hide.eq(false));
+        }
 
         long totalCount = query.fetchCount();
 

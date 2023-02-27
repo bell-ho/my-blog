@@ -25,9 +25,10 @@ public class PostController {
     @GetMapping("")
     public ResponseEntity<?> getPosts(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) String keyword
     ) {
-        PageResponse<PostResponse> posts = postService.getPosts(page, size);
+        PageResponse<PostResponse> posts = postService.getPosts(page, size,keyword);
 
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("posts", posts);
         return ResponseEntity.ok(data);
