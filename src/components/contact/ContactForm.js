@@ -163,6 +163,7 @@ const ContactForm = () => {
           multiple
           hidden
           accept="image/*"
+          maxlength="1048576"
           ref={imageInputRef}
           onChange={onUploadImage}
         />
@@ -174,7 +175,6 @@ const ContactForm = () => {
           type="text"
           id={'content'}
           autoComplete={'off'}
-          autofocus
         />
 
         <CheckWrapper>
