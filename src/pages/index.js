@@ -5,6 +5,7 @@ import AllPosts from '@/components/posts/AllPosts';
 import styled from '@emotion/styled';
 import MainNavigation from '@/components/layout/MainNavigation';
 import ScrollToTopButton from '@/components/ui/ScrollToTopButton';
+import { getSession } from 'next-auth/react';
 
 export default function Home() {
   const { ref, inView } = useInView();
@@ -42,3 +43,22 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+}

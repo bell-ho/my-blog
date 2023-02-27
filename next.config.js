@@ -8,6 +8,11 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  // experimental: {
+  //   modern: true,
+  //   edgeChunks: true,
+  //   optimizeFonts: true,
+  // },
 };
 
 module.exports = nextConfig;

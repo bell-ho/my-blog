@@ -3,9 +3,9 @@ import KakaoProvider from 'next-auth/providers/kakao';
 import GoogleProvider from 'next-auth/providers/google';
 import NaverProvider from 'next-auth/providers/naver';
 import { axios } from '@/util/axios';
-
 const nextAuthOptions = (req, res) => {
   return {
+    secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
     providers: [
       KakaoProvider({
         clientId: process.env.KAKAO_CLIENT_ID,
@@ -79,6 +79,9 @@ const nextAuthOptions = (req, res) => {
     },
   };
 };
-export default (req, res) => {
+
+const authHandler = (req, res) => {
   return NextAuth(req, res, nextAuthOptions(req, res));
 };
+
+export default authHandler;

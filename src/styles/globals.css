@@ -67,7 +67,7 @@ button {
 
 .material-icons-with-text {
     cursor: pointer;
-    gap: 5px;
+    gap: 3px;
 }
 
 .swiper {
@@ -99,7 +99,6 @@ button {
     font-weight: normal;
     font-display: block;
 }
-
 
 @font-face {
     font-family: 'Pretendard';

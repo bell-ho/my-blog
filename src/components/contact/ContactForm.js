@@ -152,7 +152,7 @@ const ContactForm = () => {
     <section className={classes.contact}>
       <form className={classes.form} onSubmit={sendHandler}>
         <button type={'button'} onClick={imageButtonClick}>
-          ADD A FILE
+          ADD IMAGES
         </button>
 
         <ImageBox onRemoveImage={onRemoveImage} imagePaths={imagePaths} />

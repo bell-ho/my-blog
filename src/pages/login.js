@@ -1,7 +1,8 @@
 import React from 'react';
-import { signIn, useSession, signOut, getSession } from 'next-auth/react';
+import { getSession, signIn, useSession } from 'next-auth/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+
 const Login = () => {
   const { data: session } = useSession();
 
@@ -13,13 +14,17 @@ const Login = () => {
   //     </div>
   //   );
   // }
+
   return (
     <Wrapper>
       <Contents>
+        <h1>판도라</h1>
+        <Image width={300} height={300} src={'/images/site/jh.png'} alt={'good'} />
         <LoginButton onClick={() => signIn('kakao')}>
           <Image
             width={300}
             height={45}
+            layout="intrinsic"
             src="/images/login/kakao_login_large_wide.png"
             alt="카카오 로그인 버튼"
           />
@@ -35,7 +40,7 @@ const Login = () => {
         </LoginButton>
         <LoginButton onClick={() => signIn('naver')}>
           <Image
-            width={285}
+            width={300}
             height={45}
             layout="intrinsic"
             src="/images/login/btnG_naver.png"
@@ -55,12 +60,17 @@ const Wrapper = styled.div`
 `;
 
 const Contents = styled.div`
-  background: white;
+  background-color: dodgerblue;
   padding: 2rem;
   height: auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: center;
+
+  h1 {
+    font-weight: bold;
+  }
 `;
 
 const LoginButton = styled.button`
