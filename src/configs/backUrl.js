@@ -1,1 +1,1 @@
-export const backUrl = 'http://localhost:8080';
+export const backUrl = process.env.NEXT_PUBLIC_BACK_URL;
