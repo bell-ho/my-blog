@@ -70,6 +70,12 @@ compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
 
+bootJar {
+    archiveBaseName = '-'
+    archiveFileName = 'next-blog-back.jar'
+    archiveVersion = '0.0.0'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
