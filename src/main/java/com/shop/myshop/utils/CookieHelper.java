@@ -1,6 +1,5 @@
 package com.shop.myshop.utils;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,6 @@ public class CookieHelper {
     private static final boolean USE_HTTPS = false;
     private static final boolean READONLY = false;
     private static final String DOMAIN = "localhost";
-    private static int MAX_AGE = 604800;
 
     public static void extendExpirationTime(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
@@ -28,8 +26,8 @@ public class CookieHelper {
 
     //도메인 넘기는 쿠키 https://annajin.tistory.com/211
     public static void insert(HttpServletResponse response, String key, String value) {
+        int MAX_AGE = 604800;
         ResponseCookie cookie = ResponseCookie.from(key, value)
-                .domain(DOMAIN)
                 .path(COOKIE_PATH)
                 .secure(READONLY)
                 .httpOnly(USE_HTTPS)
