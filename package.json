@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "vercel-deploy": "next build && next export"
+    "dev": "cross-env NODE_ENV=development next dev -p 3000",
+    "build": "cross-env ANALYZE=true NODE_END=production next build",
+    "start": "cross-env NODE_ENV=production next start -p 3000",
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",
@@ -17,6 +16,7 @@
     "@tanstack/react-query-devtools": "^4.24.4",
     "aws-sdk": "^2.1321.0",
     "axios": "^1.3.2",
+    "cross-env": "^7.0.3",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "gray-matter": "^4.0.3",
