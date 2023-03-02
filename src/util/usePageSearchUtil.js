@@ -43,6 +43,7 @@ export const usePageSearchUtil = () => {
     (event) => {
       delayedSearch(() => {
         setKeyword(event.target.value);
+        window.scrollTo({ top: 0, behavior: 'auto' });
       }, 500);
     },
     [delayedSearch],

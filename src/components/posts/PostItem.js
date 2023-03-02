@@ -90,9 +90,7 @@ const PostItem = ({
                   if (v.match(/(#[^\s#]+)/g)) {
                     return (
                       // <Link href={`/hashtag/${v.slice(1)}`} prefetch={false} key={i}>
-                      <Link href={`/`} style={{ color: 'blue', fontWeight: 'bold' }}>
-                        {v}
-                      </Link>
+                      <text style={{ color: 'blue', fontWeight: 'bold' }}>{v}</text>
                     );
                   }
                   return v;

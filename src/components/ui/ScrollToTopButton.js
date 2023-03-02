@@ -42,6 +42,8 @@ const buttonStyle = css`
   border-radius: 50%;
   cursor: pointer;
 
+  z-index: 999;
+
   &:hover {
     background-color: #555;
   }
