@@ -13,6 +13,7 @@ public class CookieHelper {
     private static final String COOKIE_PATH = "/";
     private static final boolean USE_HTTPS = false;
     private static final boolean READONLY = false;
+//    private static final String DOMAIN = "ec2-13-124-193-194.ap-northeast-2.compute.amazonaws.com";
     private static final String DOMAIN = "localhost";
 
     public static void extendExpirationTime(HttpServletRequest request, HttpServletResponse response) {
@@ -28,6 +29,7 @@ public class CookieHelper {
     public static void insert(HttpServletResponse response, String key, String value) {
         int MAX_AGE = 604800;
         ResponseCookie cookie = ResponseCookie.from(key, value)
+                .domain(DOMAIN)
                 .path(COOKIE_PATH)
                 .secure(READONLY)
                 .httpOnly(USE_HTTPS)
