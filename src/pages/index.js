@@ -5,7 +5,6 @@ import AllPosts from '@/components/posts/AllPosts';
 import styled from '@emotion/styled';
 import MainNavigation from '@/components/layout/MainNavigation';
 import ScrollToTopButton from '@/components/ui/ScrollToTopButton';
-import { getSession } from 'next-auth/react';
 
 export default function Home() {
   const { ref, inView } = useInView();

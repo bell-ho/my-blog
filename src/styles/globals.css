@@ -1,14 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Roboto&family=Source+Sans+Pro:wght@300&display=swap');
 @import "reset.css";
 @import "normalize.css";
+
+@font-face {
+    font-family: 'NotoSans';
+    src: url("../assets/fonts/NotoSansKR-Light.otf");
+    font-weight: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    src: url("../assets/fonts/Pretendard-Medium.woff2") format('woff2');
+    font-weight: normal;
+    font-display: block;
+}
 
 * {
     box-sizing: border-box;
 }
 
 body {
-    padding-top: 5rem;
-
     --color-grey-50: hsl(265, 55%, 96%);
     --color-grey-100: hsl(265, 19%, 88%);
     --color-grey-200: hsl(265, 7%, 70%);
@@ -49,13 +60,14 @@ body {
     margin: 0;
     background-color: var(--color-grey-500);
     color: #252525;
-    font-family: Pretendard,'Open Sans', 'Lato', sans-serif;
+    font-family: Pretendard, 'Open Sans', 'Lato', sans-serif;
+    padding-top: 5rem;
 }
 
 h1,
 h2,
 h3 {
-    font-family: Pretendard,'Open Sans', 'Lato', sans-serif;
+    font-family: Pretendard, 'Open Sans', 'Lato', sans-serif;
 }
 
 a {
@@ -91,20 +103,7 @@ button {
 
 .swiper .swiper-pagination {
 }
+
 .swiper .swiper-pagination-bullet {
     background-color: #000;
-}
-
-@font-face {
-    font-family: 'NotoSans';
-    src: url("../assets/fonts/NotoSansKR-Light.otf");
-    font-weight: normal;
-    font-display: block;
-}
-
-@font-face {
-    font-family: 'Pretendard';
-    src: url("../assets/fonts/Pretendard-Medium.woff2") format('woff2');
-    font-weight: normal;
-    font-display: block;
 }
