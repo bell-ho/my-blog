@@ -13,7 +13,11 @@ public class WebConfig implements WebMvcConfigurer {
         //모든 경로
         long MAX_AGE_SECS = 3600;
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://ec2-13-124-193-194.ap-northeast-2.compute.amazonaws.com:3000")
+                .allowedOrigins(
+                        "http://localhost:3000",
+                        "http://supercola.co.kr:80",
+                        "http://supercola.co.kr",
+                        "http://supercola.co.kr:3000")
                 .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)

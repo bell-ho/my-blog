@@ -1,5 +1,6 @@
 package com.shop.myshop.utils;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
@@ -11,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 public class CookieHelper {
 
     private static final String COOKIE_PATH = "/";
-    private static final boolean USE_HTTPS = false;
+    private static final boolean USE_HTTPS = false; // TODO
     private static final boolean READONLY = false;
-//    private static final String DOMAIN = "ec2-13-124-193-194.ap-northeast-2.compute.amazonaws.com";
-    private static final String DOMAIN = "localhost";
+//    private static final String DOMAIN = "localhost";
+    private static final String DOMAIN = ".supercola.co.kr";
 
     public static void extendExpirationTime(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
