@@ -60,7 +60,7 @@ public class PostServiceImpl implements PostService {
                 .leftJoin(post.postLikeDislikes, postLikeDislike).fetchJoin()
                 .leftJoin(post.postHashtagMaps, postHashtagMap)
                 .leftJoin(postHashtagMap.hashtag, hashtag)
-                .orderBy(post.createdDate.desc());
+                .orderBy(post.id.desc(), post.createdDate.desc());
 
         if (keywordValidation(keyword) != null) {
             query.where(
