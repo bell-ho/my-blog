@@ -30,4 +30,6 @@ public class Member extends BaseEntity {
     private String provider;
     @OneToMany(mappedBy = "member")
     private List<Post> posts;
+    @Enumerated(EnumType.STRING)
+    private RoleType role;
 }

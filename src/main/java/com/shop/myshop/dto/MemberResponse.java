@@ -14,6 +14,7 @@ public class MemberResponse {
     private String token;
     private String name;
     private String nickName;
+    private String role;
 
     @Builder
     public MemberResponse(Member entity) {
@@ -21,6 +22,7 @@ public class MemberResponse {
             this.email = entity.getEmail() != null ? entity.getEmail() : "";
             this.name = entity.getName();
             this.nickName = entity.getNickName();
+            this.role = entity.getRole().name().toLowerCase();
         }
     }
 

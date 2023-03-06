@@ -1,5 +1,5 @@
 package com.shop.myshop.domain;
 
-public enum Role {
+public enum RoleType {
     ROLE_ADMIN,ROLE_USER
 }
