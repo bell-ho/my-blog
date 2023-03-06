@@ -14,15 +14,14 @@ export const axios = Axios.create({
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
-  async function (request) {
+  async function (config) {
     const session = await getSession();
 
-    if (session) {
-      const token = cookies.get('Authorization');
-      request.headers.Authorization = `Bearer ${token}`;
+    if (session && session?.accessToken) {
+      config.headers.Authorization = `Bearer ${session.accessToken}`;
     }
 
-    return request;
+    return config;
   },
   function (error) {
     return Promise.reject(error);

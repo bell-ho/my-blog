@@ -82,7 +82,7 @@ const LoginButton = styled.button`
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
 
-  if (session) {
+  if (session && session?.accessToken) {
     return {
       redirect: {
         destination: '/',

@@ -49,14 +49,11 @@ const nextAuthOptions = (req, res) => {
           const existUser = await axios
             .get(`/api/v1/auth/validation-user/${params.uniqueKey}`)
             .then((response) => {
-              res.setHeader('Set-Cookie', response.headers['set-cookie']);
               return response.data.data;
             });
 
           if (!existUser) {
-            await axios.post(`/api/v1/auth/signup`, params).then((response) => {
-              res.setHeader('Set-Cookie', response.headers['set-cookie']);
-            });
+            await axios.post(`/api/v1/auth/signup`, params).then((response) => {});
           }
         } catch (e) {
           console.error(e);
@@ -69,17 +66,19 @@ const nextAuthOptions = (req, res) => {
           const existUser = await axios
             .get(`/api/v1/auth/validation-user/${user?.id}`)
             .then((response) => {
-              res.setHeader('Set-Cookie', response.headers['set-cookie']);
-              return response.data.data;
+              return response.data.data.member;
             });
 
-          token.role = existUser?.member?.role;
-          token.accessToken = account.access_token;
+          token.role = existUser?.role;
+          token.accessToken = existUser?.token;
           token.id = user?.id;
+
+          // token.accessToken = account.access_token;
         }
         return token;
       },
       async session({ session, token, user }) {
+        session.accessToken = token.accessToken;
         session.user.id = token.id;
         session.user.role = token.role;
         return session;
