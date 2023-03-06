@@ -35,11 +35,10 @@ public class Post extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Images> images = new ArrayList<>();
+    private Set<Images> images = new HashSet<>();
     @Builder.Default
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostHashtagMap> postHashtagMaps = new ArrayList<>();
-
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostLikeDislike> postLikeDislikes = new HashSet<>();
 
