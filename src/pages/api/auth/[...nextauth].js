@@ -3,6 +3,7 @@ import KakaoProvider from 'next-auth/providers/kakao';
 import GoogleProvider from 'next-auth/providers/google';
 import NaverProvider from 'next-auth/providers/naver';
 import { axios } from '@/util/axios';
+
 const nextAuthOptions = (req, res) => {
   return {
     secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
@@ -60,10 +61,19 @@ const nextAuthOptions = (req, res) => {
         } catch (e) {
           console.error(e);
         }
+
         return true;
       },
       async jwt({ token, account, user }) {
         if (account) {
+          const existUser = await axios
+            .get(`/api/v1/auth/validation-user/${user?.id}`)
+            .then((response) => {
+              res.setHeader('Set-Cookie', response.headers['set-cookie']);
+              return response.data.data;
+            });
+
+          token.role = existUser?.member?.role;
           token.accessToken = account.access_token;
           token.id = user?.id;
         }
@@ -71,6 +81,7 @@ const nextAuthOptions = (req, res) => {
       },
       async session({ session, token, user }) {
         session.user.id = token.id;
+        session.user.role = token.role;
         return session;
       },
       async redirect({ url, baseUrl }) {

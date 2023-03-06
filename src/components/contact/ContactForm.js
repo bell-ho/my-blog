@@ -181,7 +181,7 @@ const ContactForm = () => {
           <Checkbox checked={hide} onChange={setHide}>
             숨기기
           </Checkbox>
-          {hide && <h4>(숨겨도 해시태그로 검색 가능합니다.)</h4>}
+          {hide && <h4>(숨겨도 해시태그로 검색 가능)</h4>}
         </CheckWrapper>
 
         <button disabled={!isReadyToSubmit}>등록</button>
@@ -197,11 +197,10 @@ const CheckWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
+  font-size: var(--size-4);
   margin-bottom: 10px;
 
   h4 {
-    margin-top: 10px;
-    font-size: var(--size-4);
     color: #5252de;
   }
 `;

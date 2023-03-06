@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useAllPostsQuery } from '@/query-hooks/usePosts';
 import { useInView } from 'react-intersection-observer';
 import AllPosts from '@/components/posts/AllPosts';

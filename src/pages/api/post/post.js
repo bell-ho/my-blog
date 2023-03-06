@@ -19,3 +19,9 @@ export const likePost = async ({ postId, type, memberUniqueKey }) => {
 
   return data.data.postLikeDislike;
 };
+
+export const deletePost = async (postId) => {
+  const { data } = await axios.delete(`/api/v1/post/${postId}`);
+
+  return data.data;
+};

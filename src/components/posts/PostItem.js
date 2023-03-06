@@ -1,14 +1,14 @@
 import React, { Children, useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import classes from './post-item.module.css';
 import styled from '@emotion/styled';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import Notification from '@/components/ui/notification';
 import ImageSwiper from '@/components/ui/ImageSwiper';
 
 const PostItem = ({
   post: { id, content, nickName, postLikeDislikes, images, createDate },
   onThumbClick,
+  onDeletePost,
 }) => {
   const { data: session, status } = useSession();
 
@@ -118,9 +118,11 @@ const PostItem = ({
                   <div>{dislikeCnt}</div>
                 </span>
               </div>
-              {/*<span className="material-icons-with-text">*/}
-              {/*  <i className="material-icons">delete</i>*/}
-              {/*</span>*/}
+              {session.user?.role === 'role_admin' && (
+                <span className="material-icons-with-text" onClick={() => onDeletePost(id)}>
+                  <i className="material-icons">delete</i>
+                </span>
+              )}
             </div>
           </ContentWrapper>
         </div>
