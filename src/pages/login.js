@@ -18,7 +18,7 @@ const Login = () => {
   return (
     <Wrapper>
       <Contents>
-        <h1>판도라</h1>
+        <h1>테스트저장소</h1>
         <Image width={300} height={300} src={'/images/site/jh.png'} alt={'good'} />
         <LoginButton onClick={() => signIn('kakao')}>
           <Image
