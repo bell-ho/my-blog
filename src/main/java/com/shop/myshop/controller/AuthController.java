@@ -34,7 +34,6 @@ public class AuthController {
                 MemberResponse memberRes = new MemberResponse(member);
                 final String token = tokenProvider.create(memberRes.toEntity());
                 memberRes.setToken(token);
-                CookieHelper.insert(response, "Authorization", token);
                 data = ResponseData.fromResult(result).add("member", memberRes);
             } else {
                 data = ResponseData.fromResult(result).add("member", null);
@@ -51,10 +50,8 @@ public class AuthController {
 
         final String token = tokenProvider.create(member.toEntity());
         member.setToken(token);
-        CookieHelper.insert(response, "Authorization", token);
 
         ResponseData data = ResponseData.fromResult(RequestResultEnum.SUCCESS).add("member", member);
-
         return ResponseEntity.ok(data);
     }
 }
