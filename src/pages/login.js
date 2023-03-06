@@ -20,15 +20,15 @@ const Login = () => {
       <Contents>
         <h1>테스트저장소</h1>
         <Image width={300} height={300} src={'/images/site/jh.png'} alt={'good'} />
-        <LoginButton onClick={() => signIn('kakao')}>
-          <Image
-            width={300}
-            height={45}
-            layout="intrinsic"
-            src="/images/login/kakao_login_large_wide.png"
-            alt="카카오 로그인 버튼"
-          />
-        </LoginButton>
+        {/*<LoginButton onClick={() => signIn('kakao')}>*/}
+        {/*  <Image*/}
+        {/*    width={300}*/}
+        {/*    height={45}*/}
+        {/*    layout="intrinsic"*/}
+        {/*    src="/images/login/kakao_login_large_wide.png"*/}
+        {/*    alt="카카오 로그인 버튼"*/}
+        {/*  />*/}
+        {/*</LoginButton>*/}
         <LoginButton onClick={() => signIn('google')}>
           <Image
             width={300}
@@ -38,15 +38,15 @@ const Login = () => {
             alt="구글 로그인 버튼"
           />
         </LoginButton>
-        <LoginButton onClick={() => signIn('naver')}>
-          <Image
-            width={300}
-            height={45}
-            layout="intrinsic"
-            src="/images/login/btnG_naver.png"
-            alt="네이버 로그인 버튼"
-          />
-        </LoginButton>
+        {/*<LoginButton onClick={() => signIn('naver')}>*/}
+        {/*  <Image*/}
+        {/*    width={300}*/}
+        {/*    height={45}*/}
+        {/*    layout="intrinsic"*/}
+        {/*    src="/images/login/btnG_naver.png"*/}
+        {/*    alt="네이버 로그인 버튼"*/}
+        {/*  />*/}
+        {/*</LoginButton>*/}
       </Contents>
     </Wrapper>
   );
