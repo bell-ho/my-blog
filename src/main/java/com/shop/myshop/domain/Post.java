@@ -34,16 +34,16 @@ public class Post extends BaseEntity {
     private Member member;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Images> images = new ArrayList<>();
     @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PostHashtagMap> postHashtagMaps = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostLikeDislike> postLikeDislikes = new HashSet<>();
 
-    public static Post createPost(Member member, String content,boolean isHide) {
+    public static Post createPost(Member member, String content, boolean isHide) {
         Post post = new Post();
         post.setMember(member);
         post.setContent(content);

@@ -15,9 +15,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "http://localhost:3000",
-                        "http://supercola.co.kr:80",
                         "http://supercola.co.kr",
-                        "http://supercola.co.kr:3000")
+                        "https://supercola.co.kr"
+                )
                 .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true)

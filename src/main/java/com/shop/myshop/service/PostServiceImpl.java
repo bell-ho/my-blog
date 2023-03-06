@@ -111,6 +111,12 @@ public class PostServiceImpl implements PostService {
         return savedPost;
     }
 
+    @Override
+    @Transactional
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
+
     private boolean validateDuplicateTag(String name) {
         Optional<Hashtag> hashtag = hashTagRepository.findByName(name);
         return hashtag.isPresent();

@@ -14,4 +14,5 @@ public interface PostService {
 
     PostLikeDislike likeDislikePost(Long postId, String memberUniqueKey,String type);
 
+    void deletePost(Long postId);
 }
