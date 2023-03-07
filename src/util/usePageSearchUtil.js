@@ -51,6 +51,7 @@ export const usePageSearchUtil = () => {
 
   return {
     keyword,
+    setKeyword,
     handleKeywordChange,
   };
 };

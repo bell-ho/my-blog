@@ -4,7 +4,7 @@ import { getPosts } from '@/pages/api/post/post';
 import { usePageSearchUtil } from '@/util/usePageSearchUtil';
 
 export const useAllPostsQuery = () => {
-  const { keyword, handleKeywordChange } = usePageSearchUtil();
+  const { keyword, setKeyword, handleKeywordChange } = usePageSearchUtil();
 
   const {
     data,
@@ -33,6 +33,7 @@ export const useAllPostsQuery = () => {
     isFetchingNextPage,
     status,
     keyword,
+    setKeyword,
     handleKeywordChange,
   };
 };

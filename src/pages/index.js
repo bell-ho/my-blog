@@ -15,6 +15,7 @@ export default function Home() {
     fetchNextPage,
     isLoading: loadPostsLoading,
     handleKeywordChange,
+    setKeyword,
   } = useAllPostsQuery();
 
   const posts = data?.pages.flatMap((page) => page.content) || [];
@@ -31,7 +32,7 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <MainNavigation handleKeywordChange={handleKeywordChange} />
+      <MainNavigation handleKeywordChange={handleKeywordChange} setKeyword={setKeyword} />
       <AllPosts posts={posts} />
       <ScrollToTopButton />
       <div ref={readToLoad ? ref : undefined} style={{ height: 50, backgroundColor: 'white' }} />
