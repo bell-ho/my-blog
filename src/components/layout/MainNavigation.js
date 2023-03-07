@@ -42,6 +42,9 @@ const MainNavigation = ({ handleKeywordChange, setKeyword }) => {
                 <i className="material-icons">close</i>
               </CloseButton>
             </Search>
+            <IconButton onClick={handleSignOut}>
+              <i className="material-icons">logout</i>
+            </IconButton>
           </SearchWrapper>
         ) : (
           <Fragment>
@@ -96,16 +99,16 @@ const SearchWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  max-width: 20rem;
 `;
 
 const Search = styled.div`
   display: flex;
   align-items: center;
-  width: 20rem;
   height: 40px;
   background-color: #f7f7f7;
   border-radius: 15px;
-  padding: 0 10px;
+  justify-content: space-between;
 
   input {
     border: none;
