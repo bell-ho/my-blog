@@ -8,22 +8,12 @@ import styled from '@emotion/styled';
 const MainNavigation = ({ handleKeywordChange }) => {
   return (
     <header className={classes.header}>
-      <ul>
-        <li>
-          <Link href={'/'}>
-            <Logo />
-          </Link>
-        </li>
-        <li>
-          <Search>
-            <input
-              type="text"
-              placeholder="해시태그를 검색하세요."
-              onChange={handleKeywordChange}
-            />
-          </Search>
-        </li>
-      </ul>
+      <Link href={'/'}>
+        <Logo />
+      </Link>
+      <Search>
+        <input type="text" placeholder="해시태그를 검색하세요." onChange={handleKeywordChange} />
+      </Search>
     </header>
   );
 };

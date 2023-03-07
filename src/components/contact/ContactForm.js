@@ -171,7 +171,7 @@ const ContactForm = () => {
         <input
           placeholder={'ex) #해시태그 #멋있어요'}
           ref={contentInputRef}
-          maxlength="15"
+          maxlength="35"
           type="text"
           id={'content'}
           autoComplete={'off'}
