@@ -22,7 +22,7 @@ const PostsGrid = ({ posts }) => {
     async (postId, type, memberUniqueKey) => {
       delayedFn(async () => {
         await likeDislikePostMutation.mutate({ postId, type, memberUniqueKey });
-      }, 300);
+      }, 100);
     },
     [delayedFn, likeDislikePostMutation],
   );
