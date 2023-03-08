@@ -14,8 +14,8 @@ public class CookieHelper {
     private static final String COOKIE_PATH = "/";
     private static final boolean USE_HTTPS = false; // TODO
     private static final boolean READONLY = false;
-//    private static final String DOMAIN = "localhost";
-    private static final String DOMAIN = ".supercola.co.kr";
+    private static final String DOMAIN = "localhost";
+//    private static final String DOMAIN = ".supercola.co.kr";
 
     public static void extendExpirationTime(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
