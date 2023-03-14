@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/", "/memory","/api/v1/auth/**").permitAll() // /와 /auth/** 는 경로 인증 안함
+                    .antMatchers("/","/actuator/**","/memory","/api/v1/auth/**").permitAll() // /와 /auth/** 는 경로 인증 안함
                     .anyRequest()
                     .authenticated();
 
