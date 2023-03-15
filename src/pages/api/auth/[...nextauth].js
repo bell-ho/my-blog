@@ -24,6 +24,9 @@ const nextAuthOptions = (req, res) => {
     session: {
       jwt: true,
     },
+    pages: {
+      signIn: '/login',
+    },
     callbacks: {
       async signIn(user, account, metadata) {
         const provider = user.account.provider;
