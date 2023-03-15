@@ -163,7 +163,7 @@ const ContactForm = () => {
           multiple
           hidden
           accept="image/*"
-          maxlength="1048576"
+          maxLength="1048576"
           ref={imageInputRef}
           onChange={onUploadImage}
         />
@@ -171,7 +171,7 @@ const ContactForm = () => {
         <input
           placeholder={'ex) #해시태그 #멋있어요'}
           ref={contentInputRef}
-          maxlength="35"
+          maxLength="35"
           type="text"
           id={'content'}
           autoComplete={'off'}
