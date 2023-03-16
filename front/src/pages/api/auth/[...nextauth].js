@@ -5,6 +5,8 @@ import NaverProvider from 'next-auth/providers/naver';
 import { axios } from '@/util/axios';
 
 const nextAuthOptions = (req, res) => {
+  let privateToken;
+  let role;
   return {
     secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
     providers: [
@@ -52,11 +54,18 @@ const nextAuthOptions = (req, res) => {
           const existUser = await axios
             .get(`/api/v1/auth/validation-user/${params.uniqueKey}`)
             .then((response) => {
-              return response.data.data;
+              return response.data.data.member;
             });
 
+          privateToken = existUser?.token;
+          role = existUser?.role;
+
           if (!existUser) {
-            await axios.post(`/api/v1/auth/signup`, params).then((response) => {});
+            await axios.post(`/api/v1/auth/signup`, params).then((response) => {
+              const newMember = response.data.data.member;
+              privateToken = newMember.token;
+              role = newMember.role;
+            });
           }
         } catch (e) {
           console.error(e);
@@ -66,17 +75,9 @@ const nextAuthOptions = (req, res) => {
       },
       async jwt({ token, account, user }) {
         if (account) {
-          const existUser = await axios
-            .get(`/api/v1/auth/validation-user/${user?.id}`)
-            .then((response) => {
-              return response.data.data.member;
-            });
-
-          token.role = existUser?.role;
-          token.accessToken = existUser?.token;
+          token.role = role;
+          token.accessToken = privateToken;
           token.id = user?.id;
-
-          // token.accessToken = account.access_token;
         }
         return token;
       },
