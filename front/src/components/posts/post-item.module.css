@@ -1,0 +1,40 @@
+.post {
+    margin: var(--size-8) auto;
+    max-width: 25rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    background-color: var(--color-grey-800);
+    text-align: center;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.post a {
+    color: var(--color-grey-100);
+}
+
+.image {
+    border-radius: 10px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.image img {
+    object-fit: cover;
+}
+
+.content {
+    padding: 1rem 1rem 0;
+    align-items: center;
+}
+
+.content h3 {
+    font-size: var(--size-6);
+}
+
+.content time {
+    color: var(--color-grey-300);
+}
+
+.content p {
+    line-height: var(--size-6);
+}
