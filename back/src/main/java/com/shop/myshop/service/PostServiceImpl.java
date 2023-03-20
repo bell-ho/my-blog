@@ -75,10 +75,12 @@ public class PostServiceImpl implements PostService {
 
         long totalCount = query.fetchCount();
 
-//        List<PostResponse> fetch =
+//        List<PostResponse> content =
 //                query
 //                        .select(Projections.bean(PostResponse.class, post))
 //                        .from(post)
+//                        .offset((long) page * size)
+//                        .limit(size)
 //                        .fetch();
 
         List<Post> posts = query
