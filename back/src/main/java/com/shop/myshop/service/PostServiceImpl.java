@@ -1,5 +1,6 @@
 package com.shop.myshop.service;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.myshop.domain.*;
@@ -7,6 +8,7 @@ import com.shop.myshop.dto.PostResponse;
 import com.shop.myshop.repository.*;
 import com.shop.myshop.utils.PageResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.criterion.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,14 +66,20 @@ public class PostServiceImpl implements PostService {
 
         if (keywordValidation(keyword) != null) {
             query.where(
-                    hashtag.name.eq(keyword)
-                            .and(post.hide.eq(false).or(post.hide.eq(true)))
+                    hashtag.name.eq(keyword),
+                    post.hide.eq(false).or(post.hide.eq(true))
             );
         } else {
             query.where(post.hide.eq(false));
         }
 
         long totalCount = query.fetchCount();
+
+//        List<PostResponse> fetch =
+//                query
+//                        .select(Projections.bean(PostResponse.class, post))
+//                        .from(post)
+//                        .fetch();
 
         List<Post> posts = query
                 .offset((long) page * size)
