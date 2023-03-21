@@ -6,7 +6,7 @@
 > **나의 일상 공유하기**
 > 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/62537935/224715686-621c3378-ab66-4645-bf23-57a2194dfda2.gif">
+  <img src="https://user-images.githubusercontent.com/62537935/226513661-830146e7-7e65-433f-b6ce-e95767e8a043.gif">
 </p>
 
 <br>
