@@ -28,7 +28,7 @@
 | FrontEnd       | React, Next.js, SSR, Next-Auth, React-Query, javascript, MUI |
 | BackEnd        | SpringBoot, JPA                                    |
 | Database       | MySql                                      |
-| Cloud Services | AWS EC2, AWS S3                            |
+| Cloud Services | AWS EC2, AWS S3, AWS RDS, AWS ROUTE53                            |
 
 <br>
 
