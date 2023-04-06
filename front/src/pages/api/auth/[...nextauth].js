@@ -54,7 +54,7 @@ const nextAuthOptions = (req, res) => {
           const existUser = await axios
             .get(`/api/v1/auth/validation-user/${params.uniqueKey}`)
             .then((response) => {
-              return response.data.data.member;
+              return response.data.data?.member;
             });
 
           privateToken = existUser?.token;
@@ -62,9 +62,9 @@ const nextAuthOptions = (req, res) => {
 
           if (!existUser) {
             await axios.post(`/api/v1/auth/signup`, params).then((response) => {
-              const newMember = response.data.data.member;
-              privateToken = newMember.token;
-              role = newMember.role;
+              const newMember = response.data.data?.member;
+              privateToken = newMember?.token;
+              role = newMember?.role;
             });
           }
         } catch (e) {
