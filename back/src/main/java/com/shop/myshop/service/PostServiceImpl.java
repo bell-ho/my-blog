@@ -1,6 +1,5 @@
 package com.shop.myshop.service;
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.shop.myshop.domain.*;
@@ -8,7 +7,7 @@ import com.shop.myshop.dto.PostResponse;
 import com.shop.myshop.repository.*;
 import com.shop.myshop.utils.PageResponse;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Projection;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -124,7 +123,14 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional
     public void deletePost(Long postId) {
+        checkAccess(postId);
         postRepository.deleteById(postId);
+    }
+
+    @PostAuthorize("isAuthenticated() and ((returnObject.member.id == authentication.name) or hasRole('ROLE_ADMIN'))")
+    public void checkAccess(Long postId) {
+        postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND"));
     }
 
     private boolean validateDuplicateTag(String name) {

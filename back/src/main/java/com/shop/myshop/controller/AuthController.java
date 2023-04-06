@@ -23,7 +23,7 @@ public class AuthController {
     private final TokenProvider tokenProvider;
 
     @GetMapping("/validation-user/{key}")
-    public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey, HttpServletResponse response) {
+    public ResponseEntity<?> validationUser(@PathVariable("key") String uniqueKey) {
         try {
             Member member = memberService.findByUniqueKey(uniqueKey);
 
