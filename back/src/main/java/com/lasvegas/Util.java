@@ -26,7 +26,7 @@ public class Util {
             }
         }));
         players.sort((a, b) -> b.getTotalMoney() - a.getTotalMoney());
-        System.out.println("게임 종료 : " + players);
+        System.out.println("게임 종료" + players);
     }
 
     public static Map<String, Integer> getUniqueValues(Map<String, Integer> diceInfo) {
