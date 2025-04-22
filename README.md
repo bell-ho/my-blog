@@ -22,7 +22,7 @@
 <br>
 
 ## 서비스 구조
-![myblog2 drawio](https://github.com/user-attachments/assets/839c4454-a461-48ad-9a27-831594596a73)
+![myblog2 drawio (1)](https://github.com/user-attachments/assets/1d50a3cf-a399-4caa-b156-34077fd86e99)
 
 <br>
 
