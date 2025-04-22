@@ -21,6 +21,19 @@
 
 <br>
 
+## 서비스 구조
+![myblog2 drawio](https://github.com/user-attachments/assets/839c4454-a461-48ad-9a27-831594596a73)
+
+<br>
+
+<br>
+
+## ERD
+![myblog-erd](https://github.com/user-attachments/assets/86fd3415-0b4d-4ec2-93c6-99d782a80536)
+
+
+<br>
+
 ## 📚 기술스택
 
 | 분야           | 사용 기술                                      | 비고 |
