@@ -29,13 +29,10 @@ client secret을 함께 보내도록 설정을 별도로 조정하여 문제를 
 지연시켜 입력이 멈춘 뒤에만 검색 API를 호출하도록 구현했습니다.
 
 ### 게시글 무한스크롤링, 사진 기능 (Next.js + React Query + JPA + QueryDSL)
-무한스크롤을 구현할 때 단순한 offset 페이징은 중간에 데이터가 삽입되거나 삭제되면 리스트 순서가 꼬일 위험이 있기때문에  
-백엔드에서 커서 기반 페이징을 지원해야 했습니다. 이를 해결하기 위해 QueryDSL을 이용해서 where id < :lastId order by id desc limit :size  
-형태로 커서 기반 페이징 쿼리를 만들었습니다. 또한 사진 업로드를 다루는 부분에서, multipart/form-data 처리가 Next.js API Routes와  
-충돌나는 경우가 있어서 어려웠습니다.  
-프론트엔드에서는 react-query의 useInfiniteQuery를 활용하여 getNextPageParam을 설정하고 마지막 게시글 ID를 커서로 넘겨 다음 데이터를  
-요청하는 구조로 구현했습니다. 파일 업로드시 Next.js의 API Routes는 기본적으로 multipart/form-data 처리를 지원하지 않아 충돌 문제도 발생했었습니다.  
-그래서 클라이언트에서 S3 Presigned URL을 발급받아 직접 파일을 업로드한 뒤 업로드된 파일 URL만 서버에 전달하는 방식으로 구조를 변경하여 문제를 우회했습니다.
+무한스크롤을 구현할 때 처음에 offset 기반으로 개발을 하였는데 500만건으로 테스트 진행시 전체 데이터를 조회하는 과정에서  
+성능 저하가 있었기 때문에 non-offset 방법으로 변경하였고 조회 성능을 50% 이상 개선하였습니다.  
+프론트엔드에서는 react-query의 useInfiniteQuery를 활용하여 getNextPageParam을 설정하고 마지막 게시글 ID를 커서로 넘겨
+다음 데이터를 요청하는 구조로 구현했습니다
 
 ### 좋아요 기능
 좋아요를 누를 때마다 서버에 요청을 보내면 성능이 떨어질 수 있고 특히 무한스크롤 중에 좋아요 상태를 유지하는 것도 어려웠습니다.  
