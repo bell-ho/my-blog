@@ -48,6 +48,49 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PageResponse<PostResponse> getPosts(Long lastId, int size, String keyword) {
+        QPost post = QPost.post;
+        QImages images = QImages.images;
+        QPostLikeDislike postLikeDislike = QPostLikeDislike.postLikeDislike;
+        QPostHashtagMap postHashtagMap = QPostHashtagMap.postHashtagMap;
+        QHashtag hashtag = QHashtag.hashtag;
+    
+        JPAQuery<Post> query = queryFactory.selectDistinct(post)
+                .from(post)
+                .leftJoin(post.images, images).fetchJoin()
+                .leftJoin(post.postLikeDislikes, postLikeDislike).fetchJoin()
+                .leftJoin(post.postHashtagMaps, postHashtagMap)
+                .leftJoin(postHashtagMap.hashtag, hashtag)
+                .orderBy(post.id.desc(), post.createdDate.desc());
+    
+        if (lastId != null) {
+            query.where(post.id.lt(lastId));
+        }
+    
+        if (keywordValidation(keyword) != null) {
+            query.where(
+                    hashtag.name.eq(keyword),
+                    post.hide.eq(false).or(post.hide.eq(true))
+            );
+        } else {
+            query.where(post.hide.eq(false));
+        }
+    
+        List<Post> posts = query
+                .limit(size)
+                .fetch();
+    
+        List<PostResponse> content = posts.stream()
+                .map(PostResponse::new)
+                .collect(Collectors.toList());
+    
+        Long nextCursor = posts.isEmpty() ? null : posts.get(posts.size() - 1).getId();
+        boolean isLast = posts.size() < size;
+    
+        return new PageResponse<>(content, nextCursor, size, isLast);
+    }
+    
+    @Override
     public PageResponse<PostResponse> getPosts(int page, int size, String keyword) {
         QPost post = QPost.post;
         QImages images = QImages.images;
@@ -73,14 +116,6 @@ public class PostServiceImpl implements PostService {
         }
 
         long totalCount = query.fetchCount();
-
-//        List<PostResponse> content =
-//                query
-//                        .select(Projections.bean(PostResponse.class, post))
-//                        .from(post)
-//                        .offset((long) page * size)
-//                        .limit(size)
-//                        .fetch();
 
         List<Post> posts = query
                 .offset((long) page * size)
