@@ -14,12 +14,13 @@
 ## 구현 기능
 
 ### 소셜 로그인, 로그아웃 (NextAuth + 카카오/구글/네이버 연동)
-카카오와 네이버는 OAuth 2.0 표준을 완벽하게 따르지 않는 부분이 있어 next-auth의 기본 OAuth provider 설정만으로는 정상적으로  
-연동되지 않았습니다. 특히 카카오는 userinfo API를 별도로 호출하여 이메일, 닉네임 등의 정보를 직접 가져와야 했고  
-네이버는 토큰 발급 시 client secret을 추가로 요구하는 방식이 달랐습니다. 이 문제를 해결하기 위해 next-auth에서 제공하는 CredentialsProvider 대신  
-OAuthProvider를 커스터마이징하여 profile 함수를 오버라이드하고, 필요한 사용자 정보를 수동으로 매핑했습니다.
-카카오의 경우 https://kapi.kakao.com/v2/user/me API를 직접 호출하여 id, email, nickname, profile_image 등의 정보를 가져오도록 수정했습니다.  
-또한 네이버는 토큰 발급 요청 시 client secret을 함께 보내도록 설정을 별도로 조정하여 문제를 해결했습니다.
+카카오와 네이버는 OAuth 2.0 표준을 완벽하게 따르지 않는 부분이 있어 next-auth의 기본 OAuth provider 설정만으로는  
+정상적으로 연동되지 않았습니다. 특히 카카오는 userinfo API를 별도로 호출하여 이메일, 닉네임 등의 정보를 직접  
+가져와야 했고 네이버는 토큰 발급 시 client secret을 추가로 요구하는 방식이 달랐습니다. 이 문제를 해결하기 위해  
+next-auth에서 제공하는 CredentialsProvider 대신 OAuthProvider를 커스터마이징하여 profile 함수를 오버라이드하고  
+필요한 사용자 정보를 수동으로 매핑했습니다. 카카오의 경우 https://kapi.kakao.com/v2/user/me API를 직접 호출하여  
+id, email, nickname, profile_image 등의 정보를 가져오도록 수정했습니다. 또한 네이버는 토큰 발급 요청 시  
+client secret을 함께 보내도록 설정을 별도로 조정하여 문제를 해결했습니다.
 
 ### 게시글 검색기능
 게시글 검색 기능에서 사용자가 키보드를 입력할 때마다 API를 호출하면, 짧은 시간 안에 너무 많은 요청이 서버로 보내질 수 있습니다.  
