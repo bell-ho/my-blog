@@ -43,8 +43,8 @@ OAuthProvider를 커스터마이징하여 profile 함수를 오버라이드하�
 중복 좋아요를 방지했습니다.
 
 ### 게시글 숨기기 기능
-숨긴 게시글은 리스트에서는 제외되지만, 내가 쓴글 목록에서는 보여야 해서 조회 조건을 동적으로 조정해야 했습니다.
-QueryDSL에서 BooleanBuilder를 활용해, 조회하는 상황에 따라 post.hide = false 조건을 걸거나 제거하는 방법을 썼고
+숨긴 게시글은 리스트에서는 제외되지만, 내가 쓴글 목록에서는 보여야 해서 조회 조건을 동적으로 조정해야 했습니다.  
+QueryDSL에서 BooleanBuilder를 활용해, 조회하는 상황에 따라 post.hide = false 조건을 걸거나 제거하는 방법을 썼고  
 프론트엔드에서는 숨김 상태를 토글할 수 있게 API를 따로 만들어서, react-query의 invalidateQueries를 사용해 게시글 리스트를 새로 갱신했습니다.
 
 <br>
